@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Rain&#39;s BLOG">
+    <title>DOM &amp; BOM Note - Rain&#39;s BLOG</title>
+    <meta name="author" content="Rain">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Rain","sameAs":[]},"articleBody":"\n\nDOMIntroductionWhat is that DOM thing? Imagine on our web page, where Javascript code is loaded eventually, we also render basic HTML code.Javascript and the browser, these two pieces interact all the time.\nDifferent ways of loading Javascript files will affect the parsing of the HTML code because the browser simply reads that HTML file from top to bottom and when it encounters a script, it executes it, when it encounters other HTML elements, it simply parses and renders those and in the end, it then renders the pixels on the screen which you need to see to see a button, to see a title and so on.\nJavascript is a hosted language, that means the browser provides the environment for Javascript to run, it provides the Javascript engine which in the end parses and understands all the Javascript code and executes it in the end.So the browser provides that, it also provides a bunch of APIs, a bunch of functionalities into which Javascript can tap so that Javascript can interact with the browser. \nActually browser exposes functionality to let Javascript interact with that rendered HTML code and it’s called the Document Object Model, the abbreviation of course is DOM and that’s where this term comes from. \nSo the DOM is this loaded and rendered HTML code. To be precise, the object representation of this code which the browser creates behind the scenes into which we can tap with Javascript. Thus Javascript can work with a bunch of objects which will be exposed to us as Javascript objects which represent what the browser rendered or what the browser made of. \nBesides, in Javascript, we got certain methods, certain functionalities, like here this document query selector code that allows us to reach out to the loaded HTML code and for example with this code snippet which you see here, we get access to the first h1 element we have in the loaded HTML code.\n1const titleEl = document.querySelector(&#x27;h1&#x27;);\n\nDOM is not strictly tied to browsers, there are other tools which can also parse HTML that’s not even restricted to Javascript, so in other languages like Python you also can find certain tools or certain plugins, extensions which allow you to read and work with HTML code or also with Javascript if you’re running it through Node.js. let’s say, that does not have this DOM functionality built in because you typically use it on the server side or it’s simply detached from a browser but you can still add certain packages to kind of bring that back in and still be able to parse and read a HTML file.\nThe browser however has it all built in for you. This document object obove which is globally available which is not created by you but which the browser exposes to you to give you access to all the different ways of interacting with that HTML page.\ndocument objectdocument is a property of that other global object and that’s the window object.It is the root DOM node which the browser exposes to you. That means that this is really the topmost entry point to get access to all that rendered HTML code. So this provides you various methods and functionalities to get access to the elements, to query for elements, to query for HTML elements, to interact with its DOM contents, so to interact with a loaded HTML code. \nwindow on the other hand is a global object which actually has document as property, so window is the real topmost global object made available to you in Javascript in the browser and that reflects the active browser window or tab.It’s basically the global entry point, and gives access to all the features that the browser wants to expose to you. \n\n\nTry console.log(document) in the web page console. By default, you’ll see you get a strange representation which looks like HTML code, that’s a little feature by the chrome dev tools. This is actually a Javascript object but since it’s tied to the loaded document, to that loaded HTML code, it gives you this presentation where you can even select different parts if you hover over them.To get a look into the real Javascript object, type console.dir(document) and now you get access to the real Javascript object with all the properties.The body property of document gives you access to entire new object which reflects your document body and everything that’s attached to that and this will also allow us to get access to all the HTML content rendered in there.\nThe method console.dir() displays an interactive list of the properties of the specified JavaScript object. The output is presented as a hierarchical listing with disclosure triangles that let you see the contents of child objects.In other words, console.dir() is the way to see all the properties of a specified JavaScript object in console by which the developer can easily get the properties of the object.\nNode &amp; ElementNodes are the objects make up the DOM, everything in the DOM is a node. HTML tags are just element nodes.The read-only nodeType property of a Node interface is an integer that identifies what the node is. It distinguishes different kind of nodes from each other, such as elements, text and comments.Here is the reference: nodeType Node\nOn element nodes, you have special properties and methods to interact with the elements, to change their style, to change their content and so on. You also have these on methods and text nodes. \nAn element is a part of a webpage. In XML and HTML, an element may contain a data item or a chunk of text or an image, or perhaps nothing. A typical element includes an opening tag with some attributes, enclosed text content, and a closing tag.Elements and tags are not the same things. Tags begin or end an element in source code, whereas elements are part of the DOM, the document model for displaying the page in the browser.\nDOM TreeIn the context of the DOM, a node is a single point in the node tree. Various things that are nodes are the document itself, elements, text, and comments.Browser parses the HTML code, renders all pixel, and creates an object representation of that. \n\nFor instance, the HTML tag is translated to an HTML node as it’s called and this is an element node.According to the W3C HTML DOM standard, everything in an HTML document is a node: The entire document is a document node. Every HTML element is an element node.\nbrowser creates a tree of elements or a tree of nodes and in that, the HTML node is the top node, it has the head and the body as child nodes. So the relation in your HTML code is reflected in the created objects as well. The browser keeps track off the parent child relations you have between different HTML elements and it does keep track by creating such a node tree in the end.However not just HTML tags are loaded and created as objects but also all text that you have and these are created as so-called text nodes. Due to the way styling works and so on, most whitespace is actually not rendered but it is part of that DOM tree, of that node tree, so it’s part of the DOM but of course, also the normal text is part of the DOM as text nodes though and these really are two different types of nodes.You have element nodes for all the elements you have but then the content in the elements might be other elements but might also be text and text is indeed stored as objects but as a different kind of object, as text nodes with different properties and different methods.\nquerydocument.querySelector() and document.getElementById() will select one element at a time, you also have document.querySelectorAll() and other methods like Element.getElementsByTagName() which will select multiple elements. \nquerySelector takes a CSS selector as you could use it in a CSS file. It takes any CSS selector and therefore this might be a selector that matches multiple elements but in this case, this method will always give you access to the first matched element on the page.getElementById takes an ID which assigned to an HTML element and selects an element by that. Since ID should be unique on web page, this is a method which returns one element. \nquerySelectorAll, getElementsByTagName and there are other methods as well return collections of elements. Typically it’s such a node list which is not a real array but array-like, which supports certain behaviors of an array but not all of them.\nquerySelectorAll takes a CSS selector as query selector but unlike query selector, it does not return the first element which it matched but all elements that match the selector. It returns a non-live node list, a snapshot of the currently rendered DOM, whereas these get something by something methods like getElementsByTagName return a live node list which means that if you then add or remove elements, you’ll see that reflected in the list which you loaded through the get something by something method, it will not be reflected in the data returned by querySelectorAll.\nNodeListA NodeList is an array-like collection (list) of Node Objects. The nodes in a NodeList can be accessed by index (starts at 0). A NodeList is almost the same as an HTMLCollection.\nThere are 2 varieties of NodeList: live and static.In some cases, the NodeList is live, which means that changes in the DOM automatically update the collection.\n12345const parent = document.getElementById(&#x27;parent&#x27;);let childNodes = parent.childNodes;console.log(childNodes.length); // let&#x27;s assume &quot;2&quot;parent.appendChild(document.createElement(&#x27;div&#x27;));console.log(childNodes.length); // outputs &quot;3&quot;\nIn other cases, the NodeList is static, where any changes in the DOM do not affect the content of the collection. The ubiquitous document.querySelectorAll() method returns a static NodeList.\nAttribute &amp; PropertyAttributes are mapped to properties and some live synchronization is set up but that’s not always the case, for example here is an input element with an ID, with a CSS class and with a value and these three different kinds of attributes behave in different ways when it comes to the DOM object that is created.\n1&lt;input id=&#x27;1&#x27; class=&#x27;default&#x27; value=&#x27;Enter text&#x27;&gt;\nWhat write in the HTML code is named an attribute. What being added on the HTML tag is an attribute of that tag. What the browser does with these attributes is it creates such a DOM object based on the tag name, input in this case and preconfigures it and preconfigures some of its properties based on these attributes because the important thing is that the attribute is the thing in HTML code. The property is a value stored in the object that’s created based on HTML code.Objects in Javascript have properties, no matter if they are some DOM objects or not.\nlet’s store this input element in a constant, then we can read the ID from it but also the class name and the value and the properties.\nIt’s important to understand that not every attribute has a one-to-one mapping in properties, input.id has it, there we have an ID attribute and an ID property and if we change the value of the attribute, the property updates, if we change the value of the property, the attribute will update, so we have some live synchronization going on here.\ninput.className is different, there we also have live synchronization, so if we change the property, the attribute will change, if we change the attribute, the property will change but the names are not equal so we don’t really have a one-to-one mapping.class on the input, so on the HTML tag is translated to a className property here on the DOM object and the browser does this automatically, it’s important to know that not always the attribute name is equal to the property name.\nFor input.value, it has yet another different behavior. It’s called value as an attribute and value as a property but we have no real life synchronisation going on, only one way. What you have here is actually that if you change the input value, this will not be reflected back to the attribute, only if you change the attribute, the value properties value will change again and that makes sense.Keep in mind this input element is there to hold some user input and if you would always reflect this back to the attribute, then that would mean that if you ever want to reset the input to its initial value which the developer writing the HTML code at some point of time stored in that value attribute, that this would not be possible.So that’s why when the user types there, the users input is stored on the value property but not reflected back into the HTML code.\nTraverseTraverse means that once select one element, one node, therefore, you might be interested in diving into all of its child nodes, for example to add it all list items in a list or anything like that, so rather than manually selecting every element you might be interested in with query selector or so on, you could take an element which you already did select and then move to its children or its siblings and so on based on that element, that’s what’s traversing the DOM means.\n\nchildren \ndescendant: all of the children of the context node, and all of their children, and so forth.\nparent\nancestor: all the ancestors of the context node beginning with the parent node and traveling through to the root node.\n\nchildren is a property that lets you select direct descendants (elements that are immediately nested in another element). It returns a HTML Collection that updates when children elements are changed.\n1234567&lt;ul class=&quot;list&quot;&gt;  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 1&lt;/a&gt;&lt;/li&gt;  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 2&lt;/a&gt;&lt;/li&gt;  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 3&lt;/a&gt;&lt;/li&gt;  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 4&lt;/a&gt;&lt;/li&gt;  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 5&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\n1234const list = document.querySelector(&#x27;.list&#x27;)const listItems = list.childrenconsole.log(listItems)\nparentELement is a property that lets you select the parent element. The parent element is the element that encloses the current element.\n12345const firstListItem = document.querySelector(&#x27;li&#x27;)const list = firstListItem.parentElementconsole.log(list)// &lt;ul class=&quot;list&quot;&gt;...&lt;/ul&gt;\nparentElement is great for selecting one level upwards. To find an element that can be multiple levels above the current element, you use the closest method. closest lets you select the closest ancestor element that matches a selector.closest starts searching from the current element, then proceeds upwards until it reaches the document. It stops returns the first element it finds.\n12345const firstLink = document.querySelector(&#x27;a&#x27;)const list = firstLink.closest(&#x27;.list&#x27;)console.log(list)// &lt;ul class=&quot;list&quot;&gt; ... &lt;/ul&gt;\nThe Element.nextElementSibling read-only property returns the element immediately following the specified one in its parent’s children list, or null if the specified element is the last one in the list.\n12345const firstListItem = document.querySelector(&#x27;li&#x27;)const secondListItem = firstListItem.nextElementSiblingconsole.log(secondListItem)// &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 2&lt;/a&gt;&lt;/li&gt;\nThe Element.previousElementSibling read-only property returns the Element immediately prior to the specified one in its parent’s children list, or null if the specified element is the first one in the list.\n12345const secondListItem = document.querySelectorAll(&#x27;li&#x27;)[1]const firstListItem = secondListItem.previousElementSiblingconsole.log(firstListItem)// &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 1&lt;/a&gt;&lt;/li&gt;\nBOMIntroductionThe Browser Object Model (BOM) allows JavaScript to “talk to” the browser.There are no official standards for the Browser Object Model (BOM).Since modern browsers have implemented (almost) the same methods and properties for JavaScript interactivity, it is often referred to, as methods and properties of the BOM.\nwindow objectThis principal object, giving access to all the core APIs that the browser wants to expose. For example, alert. With window, in running Javascript code, by default you have access to everything in window.Totally correct would window.alert be because window is this topmost global object which is exposed to you by the browser and there, you have the alert functionality and actually browsers always parse your Javascript code such that window. is automatically added in front of some function if that function can’t be found anywhere else, so the browser always looks in the window object if you’re calling or accessing something.\n12alert()window.alert()\nKeep in mind window does not really give you access to the real window but just to the tab in which your script is running, so you won’t be able to use window to interact with a totally different web page loaded in a different tab because that would be a huge security issue if you could start reading information from another tab on your web page here.\nSo whilst it’s called window, it really just means the currently loaded tab but also the dimensions of the general window and so on. ","dateCreated":"2022-12-12T23:06:12+08:00","dateModified":"2022-12-17T00:39:55+08:00","datePublished":"2022-12-12T23:06:12+08:00","description":"DOMWhat is that DOM thing? Let’s say on our web page where Javascript code is loaded eventually, we also render this basic HTML code. So we get Javascript and we get the browser, these two pieces which interact all the time.Different ways of loading Javascript files will affect the parsing of the HTML code because the browser simply reads that HTML file from top to bottom and when it encounters a script, it executes it, when it encounters other HTML elements, it simply parses and renders those and in the end, it then renders the pixels on the screen which you need to see to see a button, to see a title and so on.","headline":"DOM & BOM Note","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"},"publisher":{"@type":"Organization","name":"Rain","sameAs":[]},"url":"https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/","keywords":"frontend"}</script>
+    <meta name="description" content="DOMWhat is that DOM thing? Let’s say on our web page where Javascript code is loaded eventually, we also render this basic HTML code. So we get Javascript and we get the browser, these two pieces whic">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="DOM &amp; BOM Note">
+<meta property="og:url" content="https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/index.html">
+<meta property="og:site_name" content="Rain&#39;s BLOG">
+<meta property="og:description" content="DOMWhat is that DOM thing? Let’s say on our web page where Javascript code is loaded eventually, we also render this basic HTML code. So we get Javascript and we get the browser, these two pieces whic">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/node.png">
+<meta property="og:image" content="https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/domTree.png">
+<meta property="article:published_time" content="2022-12-12T15:06:12.000Z">
+<meta property="article:modified_time" content="2022-12-16T16:39:55.037Z">
+<meta property="article:author" content="Rain">
+<meta property="article:tag" content="frontend">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/node.png">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-deyemuu3b37vh25ias0pblnztkxabqshff6agygslsqrprld1dh04ekuro5o.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Rain&#39;s BLOG
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Rain2022debug"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            DOM &amp; BOM Note
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-12-12T23:06:12+08:00">
+	
+		    Dec 12, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">Table of Contents</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DOM-1"><span class="toc-text">DOM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#document-object"><span class="toc-text">document object</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Node-amp-Element"><span class="toc-text">Node &amp; Element</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM-Tree"><span class="toc-text">DOM Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#query"><span class="toc-text">query</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NodeList"><span class="toc-text">NodeList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attribute-amp-Property"><span class="toc-text">Attribute &amp; Property</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Traverse"><span class="toc-text">Traverse</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BOM"><span class="toc-text">BOM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction-1"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#window-object"><span class="toc-text">window object</span></a></li></ol></li></ol>
+<h1 id="DOM-1"><a href="#DOM-1" class="headerlink" title="DOM"></a>DOM</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>What is that DOM thing? Imagine on our web page, where Javascript code is loaded eventually, we also render basic HTML code.<br>Javascript and the browser, these two pieces interact all the time.</p>
+<p>Different ways of loading Javascript files will affect the parsing of the HTML code because the browser simply reads that HTML file from top to bottom and when it encounters a script, it executes it, when it encounters other HTML elements, it simply parses and renders those and in the end, it then renders the pixels on the screen which you need to see to see a button, to see a title and so on.</p>
+<p>Javascript is a hosted language, that means the browser provides the environment for Javascript to run, it provides the Javascript engine which in the end parses and understands all the Javascript code and executes it in the end.<br>So the browser provides that, it also provides a bunch of APIs, a bunch of functionalities into which Javascript can tap so that Javascript can interact with the browser. </p>
+<p>Actually browser exposes functionality to let Javascript interact with that rendered HTML code and it’s called the Document Object Model, the abbreviation of course is DOM and that’s where this term comes from. </p>
+<p>So the DOM is this loaded and rendered HTML code. To be precise, the object representation of this code which the browser creates behind the scenes into which we can tap with Javascript. Thus Javascript can work with a bunch of objects which will be exposed to us as Javascript objects which represent what the browser rendered or what the browser made of. </p>
+<p>Besides, in Javascript, we got certain methods, certain functionalities, like here this document query selector code that allows us to reach out to the loaded HTML code and for example with this code snippet which you see here, we get access to the first h1 element we have in the loaded HTML code.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> titleEl = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;h1&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>DOM is not strictly tied to browsers, there are other tools which can also parse HTML that’s not even restricted to Javascript, so in other languages like Python you also can find certain tools or certain plugins, extensions which allow you to read and work with HTML code or also with Javascript if you’re running it through Node.js. let’s say, that does not have this DOM functionality built in because you typically use it on the server side or it’s simply detached from a browser but you can still add certain packages to kind of bring that back in and still be able to parse and read a HTML file.</p>
+<p>The browser however has it all built in for you. This document object obove which is globally available which is not created by you but which the browser exposes to you to give you access to all the different ways of interacting with that HTML page.</p>
+<h2 id="document-object"><a href="#document-object" class="headerlink" title="document object"></a>document object</h2><p>document is a property of that other global object and that’s the window object.<br>It is the root DOM node which the browser exposes to you. That means that this is really the topmost entry point to get access to all that rendered HTML code. So this provides you various methods and functionalities to get access to the elements, to query for elements, to query for HTML elements, to interact with its DOM contents, so to interact with a loaded HTML code. </p>
+<p>window on the other hand is a global object which actually has document as property, so window is the real topmost global object made available to you in Javascript in the browser and that reflects the active browser window or tab.<br>It’s basically the global entry point, and gives access to all the features that the browser wants to expose to you. </p>
+<img src="/2022/12/12/DOM-BOM-Note/node.png" class="" title="This is an image">
+
+<p>Try console.log(document) in the web page console. By default, you’ll see you get a strange representation which looks like HTML code, that’s a little feature by the chrome dev tools. This is actually a Javascript object but since it’s tied to the loaded document, to that loaded HTML code, it gives you this presentation where you can even select different parts if you hover over them.To get a look into the real Javascript object, type console.dir(document) and now you get access to the real Javascript object with all the properties.<br>The body property of document gives you access to entire new object which reflects your document body and everything that’s attached to that and this will also allow us to get access to all the HTML content rendered in there.</p>
+<p>The method console.dir() displays an interactive list of the properties of the specified JavaScript object. The output is presented as a hierarchical listing with disclosure triangles that let you see the contents of child objects.<br>In other words, console.dir() is the way to see all the properties of a specified JavaScript object in console by which the developer can easily get the properties of the object.</p>
+<h2 id="Node-amp-Element"><a href="#Node-amp-Element" class="headerlink" title="Node &amp; Element"></a>Node &amp; Element</h2><p>Nodes are the objects make up the DOM, everything in the DOM is a node. HTML tags are just element nodes.<br>The read-only nodeType property of a Node interface is an integer that identifies what the node is. It distinguishes different kind of nodes from each other, such as elements, text and comments.<br>Here is the reference: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType">nodeType</a> <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Node">Node</a></p>
+<p>On element nodes, you have special properties and methods to interact with the elements, to change their style, to change their content and so on. You also have these on methods and text nodes. </p>
+<p>An element is a part of a webpage. In XML and HTML, an element may contain a data item or a chunk of text or an image, or perhaps nothing. A typical element includes an opening tag with some attributes, enclosed text content, and a closing tag.<br>Elements and tags are not the same things. Tags begin or end an element in source code, whereas elements are part of the DOM, the document model for displaying the page in the browser.</p>
+<h2 id="DOM-Tree"><a href="#DOM-Tree" class="headerlink" title="DOM Tree"></a>DOM Tree</h2><p>In the context of the DOM, a node is a single point in the node tree. Various things that are nodes are the document itself, elements, text, and comments.<br>Browser parses the HTML code, renders all pixel, and creates an object representation of that. </p>
+<!-- Behind the scenes, browser doesn't work with text which HTML is but with these objects that are stored in memory.  -->
+<p>For instance, the HTML tag is translated to an HTML node as it’s called and this is an element node.<br>According to the W3C HTML DOM standard, everything in an HTML document is a node: The entire document is a document node. Every HTML element is an element node.</p>
+<p>browser creates a tree of elements or a tree of nodes and in that, the HTML node is the top node, it has the head and the body as child nodes. So the relation in your HTML code is reflected in the created objects as well. The browser keeps track off the parent child relations you have between different HTML elements and it does keep track by creating such a node tree in the end.<br><img src="domTree.png" width="400" height="500" alt="DOMTree"><br>However not just HTML tags are loaded and created as objects but also all text that you have and these are created as so-called text nodes. Due to the way styling works and so on, most whitespace is actually not rendered but it is part of that DOM tree, of that node tree, so it’s part of the DOM but of course, also the normal text is part of the DOM as text nodes though and these really are two different types of nodes.<br>You have element nodes for all the elements you have but then the content in the elements might be other elements but might also be text and text is indeed stored as objects but as a different kind of object, as text nodes with different properties and different methods.</p>
+<h2 id="query"><a href="#query" class="headerlink" title="query"></a>query</h2><p>document.querySelector() and document.getElementById() will select one element at a time, you also have document.querySelectorAll() and other methods like Element.getElementsByTagName() which will select multiple elements. </p>
+<p>querySelector takes a CSS selector as you could use it in a CSS file. It takes any CSS selector and therefore this might be a selector that matches multiple elements but in this case, this method will always give you access to the first matched element on the page.<br>getElementById takes an ID which assigned to an HTML element and selects an element by that. Since ID should be unique on web page, this is a method which returns one element. </p>
+<p>querySelectorAll, getElementsByTagName and there are other methods as well return collections of elements. Typically it’s such a node list which is not a real array but array-like, which supports certain behaviors of an array but not all of them.</p>
+<p>querySelectorAll takes a CSS selector as query selector but unlike query selector, it does not return the first element which it matched but all elements that match the selector. It returns a non-live node list, a snapshot of the currently rendered DOM, whereas these get something by something methods like getElementsByTagName return a live node list which means that if you then add or remove elements, you’ll see that reflected in the list which you loaded through the get something by something method, it will not be reflected in the data returned by querySelectorAll.</p>
+<h2 id="NodeList"><a href="#NodeList" class="headerlink" title="NodeList"></a>NodeList</h2><p>A NodeList is an array-like collection (list) of Node Objects. The nodes in a NodeList can be accessed by index (starts at 0). A NodeList is almost the same as an HTMLCollection.</p>
+<p>There are 2 varieties of NodeList: live and static.<br>In some cases, the NodeList is live, which means that changes in the DOM automatically update the collection.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> parent = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;parent&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> childNodes = parent.<span class="property">childNodes</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(childNodes.<span class="property">length</span>); <span class="comment">// let&#x27;s assume &quot;2&quot;</span></span><br><span class="line">parent.<span class="title function_">appendChild</span>(<span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(childNodes.<span class="property">length</span>); <span class="comment">// outputs &quot;3&quot;</span></span><br></pre></td></tr></table></figure>
+<p>In other cases, the NodeList is static, where any changes in the DOM do not affect the content of the collection. The ubiquitous document.querySelectorAll() method returns a static NodeList.</p>
+<h2 id="Attribute-amp-Property"><a href="#Attribute-amp-Property" class="headerlink" title="Attribute &amp; Property"></a>Attribute &amp; Property</h2><p>Attributes are mapped to properties and some live synchronization is set up but that’s not always the case, for example here is an input element with an ID, with a CSS class and with a value and these three different kinds of attributes behave in different ways when it comes to the DOM object that is created.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&#x27;1&#x27;</span> <span class="attr">class</span>=<span class="string">&#x27;default&#x27;</span> <span class="attr">value</span>=<span class="string">&#x27;Enter text&#x27;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>What write in the HTML code is named an attribute. What being added on the HTML tag is an attribute of that tag. What the browser does with these attributes is it creates such a DOM object based on the tag name, input in this case and preconfigures it and preconfigures some of its properties based on these attributes because the important thing is that the attribute is the thing in HTML code. The property is a value stored in the object that’s created based on HTML code.<br>Objects in Javascript have properties, no matter if they are some DOM objects or not.</p>
+<p>let’s store this input element in a constant, then we can read the ID from it but also the class name and the value and the properties.</p>
+<p>It’s important to understand that not every attribute has a one-to-one mapping in properties, input.id has it, there we have an ID attribute and an ID property and if we change the value of the attribute, the property updates, if we change the value of the property, the attribute will update, so we have some live synchronization going on here.</p>
+<p>input.className is different, there we also have live synchronization, so if we change the property, the attribute will change, if we change the attribute, the property will change but the names are not equal so we don’t really have a one-to-one mapping.<br>class on the input, so on the HTML tag is translated to a className property here on the DOM object and the browser does this automatically, it’s important to know that not always the attribute name is equal to the property name.</p>
+<p>For input.value, it has yet another different behavior. It’s called value as an attribute and value as a property but we have no real life synchronisation going on, only one way. What you have here is actually that if you change the input value, this will not be reflected back to the attribute, only if you change the attribute, the value properties value will change again and that makes sense.<br>Keep in mind this input element is there to hold some user input and if you would always reflect this back to the attribute, then that would mean that if you ever want to reset the input to its initial value which the developer writing the HTML code at some point of time stored in that value attribute, that this would not be possible.<br>So that’s why when the user types there, the users input is stored on the value property but not reflected back into the HTML code.</p>
+<h2 id="Traverse"><a href="#Traverse" class="headerlink" title="Traverse"></a>Traverse</h2><p>Traverse means that once select one element, one node, therefore, you might be interested in diving into all of its child nodes, for example to add it all list items in a list or anything like that, so rather than manually selecting every element you might be interested in with query selector or so on, you could take an element which you already did select and then move to its children or its siblings and so on based on that element, that’s what’s traversing the DOM means.<br><br /></p>
+<ul>
+<li>children </li>
+<li>descendant: all of the children of the context node, and all of their children, and so forth.</li>
+<li>parent</li>
+<li>ancestor: all the ancestors of the context node beginning with the parent node and traveling through to the root node.</li>
+</ul>
+<p>children is a property that lets you select direct descendants (elements that are immediately nested in another element). It returns a HTML Collection that updates when children elements are changed.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>Link 1<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>Link 2<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>Link 3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>Link 4<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>Link 5<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.list&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> listItems = list.<span class="property">children</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(listItems)</span><br></pre></td></tr></table></figure>
+<p>parentELement is a property that lets you select the parent element. The parent element is the element that encloses the current element.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> firstListItem = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> list = firstListItem.<span class="property">parentElement</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(list)</span><br><span class="line"><span class="comment">// &lt;ul class=&quot;list&quot;&gt;...&lt;/ul&gt;</span></span><br></pre></td></tr></table></figure>
+<p>parentElement is great for selecting one level upwards. To find an element that can be multiple levels above the current element, you use the closest method. closest lets you select the closest ancestor element that matches a selector.<br>closest starts searching from the current element, then proceeds upwards until it reaches the document. It stops returns the first element it finds.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> firstLink = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> list = firstLink.<span class="title function_">closest</span>(<span class="string">&#x27;.list&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(list)</span><br><span class="line"><span class="comment">// &lt;ul class=&quot;list&quot;&gt; ... &lt;/ul&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The Element.nextElementSibling read-only property returns the element immediately following the specified one in its parent’s children list, or null if the specified element is the last one in the list.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> firstListItem = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> secondListItem = firstListItem.<span class="property">nextElementSibling</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(secondListItem)</span><br><span class="line"><span class="comment">// &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 2&lt;/a&gt;&lt;/li&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The Element.previousElementSibling read-only property returns the Element immediately prior to the specified one in its parent’s children list, or null if the specified element is the first one in the list.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> secondListItem = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;li&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">const</span> firstListItem = secondListItem.<span class="property">previousElementSibling</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(firstListItem)</span><br><span class="line"><span class="comment">// &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link 1&lt;/a&gt;&lt;/li&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="BOM"><a href="#BOM" class="headerlink" title="BOM"></a>BOM</h1><h2 id="Introduction-1"><a href="#Introduction-1" class="headerlink" title="Introduction"></a>Introduction</h2><p>The Browser Object Model (BOM) allows JavaScript to “talk to” the browser.There are no official standards for the Browser Object Model (BOM).<br>Since modern browsers have implemented (almost) the same methods and properties for JavaScript interactivity, it is often referred to, as methods and properties of the BOM.</p>
+<h2 id="window-object"><a href="#window-object" class="headerlink" title="window object"></a>window object</h2><p>This principal object, giving access to all the core APIs that the browser wants to expose. For example, alert. With window, in running Javascript code, by default you have access to everything in window.<br>Totally correct would window.alert be because window is this topmost global object which is exposed to you by the browser and there, you have the alert functionality and actually browsers always parse your Javascript code such that window. is automatically added in front of some function if that function can’t be found anywhere else, so the browser always looks in the window object if you’re calling or accessing something.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">alert</span>()</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">alert</span>()</span><br></pre></td></tr></table></figure>
+<p>Keep in mind window does not really give you access to the real window but just to the tab in which your script is running, so you won’t be able to use window to interact with a totally different web page loaded in a different tab because that would be a huge security issue if you could start reading information from another tab on your web page here.</p>
+<p>So whilst it’s called window, it really just means the currently loaded tab but also the dimensions of the general window and so on. </p>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/frontend/" rel="tag">frontend</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/18/React-Note/"
+                    data-tooltip="React Note"
+                    aria-label="PREVIOUS: React Note"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/06/HTML-CSS-Note/"
+                    data-tooltip="HTML&amp;CSS Note"
+                    aria-label="NEXT: HTML&amp;CSS Note"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Rain. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/18/React-Note/"
+                    data-tooltip="React Note"
+                    aria-label="PREVIOUS: React Note"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/06/HTML-CSS-Note/"
+                    data-tooltip="HTML&amp;CSS Note"
+                    aria-label="NEXT: HTML&amp;CSS Note"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/12/DOM-BOM-Note/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Rain</h4>
+        
+            <div id="about-card-bio"><p>404</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>SDE</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-bym1pojsdhirnpkhctdxarml2turvkjeaykax5h1dckej6jtzqgiml57ke5z.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

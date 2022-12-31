@@ -1,0 +1,630 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Rain&#39;s BLOG">
+    <title>HTML&amp;CSS Note - Rain&#39;s BLOG</title>
+    <meta name="author" content="Rain">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Rain","sameAs":[]},"articleBody":"\n\nBasic HTMLHTML stands for hypertext markup language. We use it to describe the content of web pages basically, and an index.HTML is always the name of the main file in any project. \nAn HTML document is made out of elements and we write elements using an opening and closing tag. The closing tag has just the same name as the opening tag, but it has this slash here to close it. So every HTML document always has to start with the HTML opening tag and then close with the HTML closing tag.\n1&lt;h1&gt;This is a Heading&lt;/h1&gt;\nHere are 2 extensions can help to write code eaiser in VSCode, one is called auto renamed tag, another one that automatically closes a tag that it opened is auto close tag extension.\nSo these two extensions that I have here, they are very useful for writing HTML.\nThe main element in all HTML documents is always the HTML element. Then inside the HTML element, we always have the head and the body.\n123456789101112131415&lt;!DOCTYPE html&gt;&lt;html&gt;    &lt;head&gt;        &lt;style&gt;            body &#123;background-color: powderblue;&#125;            h1   &#123;color: blue;&#125;            p    &#123;color: red;&#125;        &lt;/style&gt;        &lt;title&gt;Page Title&lt;/title&gt;    &lt;/head&gt;    &lt;body&gt;        &lt;h1&gt;This is a Heading&lt;/h1&gt;        &lt;p&gt;This is a paragraph.&lt;/p&gt;    &lt;/body&gt;&lt;/html&gt;\n\nThis is always the structure that we use in HTML.\nNow, whatever we put into this head here is basically like the settings of the page. So it’s like describing the page. For example,  the title here, is what’s gonna be visible in Google Chrome. \nOther things that we put here in this head which is again like the settings of the page is CSS styles.Then whatever we put into the body is what’s actually gonna be visible on the page.\nUse the H1 element, we can add a heading in the body. Meanwhile, you have H1, H2 all the way to H6.\n123456&lt;h1&gt;Heading 1&lt;/h1&gt;&lt;h2&gt;Heading 2&lt;/h2&gt;&lt;h3&gt;Heading 3&lt;/h3&gt;&lt;h4&gt;Heading 4&lt;/h4&gt;&lt;h5&gt;Heading 5&lt;/h5&gt;&lt;h6&gt;Heading 6&lt;/h6&gt;\n\nAnd they will have different styles automatically applied by the browser. \nSo just like before, we put the extra content here between two tags. And different types of elements have different purposes. For example, H1 is to describe a heading. But we have other ones. For instance, we have the P element to describe a paragraph.\n123456789101112131415&lt;p&gt;This paragraphcontains a lot of linesin the source code,but the browser ignores it.&lt;/p&gt;&lt;p&gt;This paragraphcontains      a lot of spacesin the source     code,but the    browser ignores it.&lt;/p&gt;\n\nNow we can actually preview this page in Google Chrome.You can always just open the HTML document itself, or with Live-server with VSCode.\nAt last, we can actually create this bare bones structure of HTML in a very easy way in VS code. Howerver, basically type ! + tab in an empty HTML file, and like magic, all of the structure appears.\n123456789101112&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;    &lt;meta charset=&quot;UTF-8&quot;&gt;    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;    &lt;title&gt;Document&lt;/title&gt;&lt;/head&gt;&lt;body&gt;    &lt;/body&gt;&lt;/html&gt;\nSo we still have the HTML,head and body tag and in there just like we had before.Besides, we get this language here on HTML too. In this case, it’s telling the browser that we’re using the English language.\nHTML AttributeSo what are attributes?Well in HTML some elements can have attributes and these attributes basically describe elements.\nLet’s add this link element inside of the paragraph. And for that, we use the anchor element.So there’s an a, and then in here we put a text that we want to be displayed on the page. But now how do we tell the browser where this link should actually point to?That’s where the attributes come in.\n123&lt;p&gt;This is a paragraph.    &lt;a href=&quot;https://www.w3schools.com/html/html_links.asp&quot;&gt;on W3&lt;/a&gt;.&lt;/p&gt;\nSo, in this case, we described this anchor element using the href attributes. href stands for hypertext reference.Here you put the URL where this link should point to.\nNow here on the page, you can actually see that this link is right in line with the previous text. That’s why we call the anchor element an inline element. It flows in line with the rest of the text.On the other hand, for example this h2 element is a so-called block element. Because as we see here, this heading is not in line with the text of the previous element. It created a new line which only contains this content of this heading.\nLet’s check out another element which needs attributes which is the image element.For the image we use the img tag and then this source attribute. And then in here we can specify any image from the current working folder or we can also set an image URL.\n123&lt;img  src=&quot;https://www.w3schools.com/images/w3schools_green.jpg&quot;/&gt;\nThe image element does not have a closing tag. It only has an opening tag which is a img. Then we don’t have a closing tag. And so we can close this opening tab by the end using this slash here at the end of the tag.But it’s actually not mandatory, it works just the same without this one here.\nimage doesn’t have a closing tag because we don’t really put any written content in here. It’s not like we say a test image or something and then close the image. That would make no sense. And so that’s why images don’t need the closing tag.\nAs you see, different elements have different attributes. Thus the href attribute is not going to do anything on an image and the opposite is true for the source attribute. If we use source here on the anchor element, it’s not gonna have any effect.\nClass &amp; IdNow there are two very important attributes that we can actually use on all elements and which we can use to identify them. And these are classes and ids. We use classes and ids to essentially name elements so that we can then select them in CSS in order to style them.And actually we also use ids and classes to select elements from JavaScript when we do dumb manipulation. classes and ids are crucial to identifying elements and especially classes.And here’s how that works.\n123456789101112&lt;p class=&quot;first&quot;&gt;This is a paragraph.    &lt;a href=&quot;https://www.w3schools.com/html/html_links.asp&quot;&gt;on W3&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;Another heading&lt;/h2&gt;&lt;p class=&quot;second&quot;&gt;    Just another paragraph&lt;/p&gt;&lt;img    id=&quot;test-image&quot;    src=&quot;https://www.w3schools.com/images/w3schools_green.jpg&quot;/&gt;\nThe difference between classes and ids is that ids have to be unique, So each id can only be used once on the page while classes can be used over and over again.\nLet’s create an HTML form so that we can use some more attributes.\n1234567&lt;form id=&quot;your-name&quot;&gt;    &lt;h2&gt;Your name here&lt;/h2&gt;    &lt;p class=&quot;first&quot;&gt;Please fill in this form :)&lt;/p&gt;    &lt;input type=&quot;text&quot; placeholder=&quot;Your name&quot; /&gt;    &lt;button&gt;OK!&lt;/button&gt;&lt;/form&gt;\nWe want the contents of this forum to be in a box. And there are many ways of creating boxes in HTML. The most generic box is a div.Nevertheless in HTML we have a special element for that, which is instead of div, we use form. Though it looks exactly the same, it is more semantic.What semantic means is that the form element better describes the content that is inside of the box than just the generic box that is the div. A semantic element will clearly describes its meaning to both the browser and the developer.\nExamples of non-semantic elements: div and span - Tells nothing about its content.Examples of semantic elements: form, table, and article - Clearly defines its content.\nThe div element is really just a generic box which has no meaning at all. Therefore it’s usually not a good idea for many reasons, for example for SEO, when Google searches your page, it’s better if it knows exactly what each element means than just having generic boxes without any meaning at all.\nBelow it the full version code.\n12345678910111213141516171819202122232425262728293031323334353637&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;  &lt;head&gt;    &lt;meta charset=&quot;UTF-8&quot; /&gt;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;    &lt;style&gt;            body &#123;background-color: powderblue;&#125;            h1   &#123;color: blue;&#125;            p    &#123;color: red;&#125;    &lt;/style&gt;    &lt;title&gt;Page Title&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;h1&gt;This is a Heading&lt;/h1&gt;    &lt;p class=&quot;first&quot;&gt;This is a paragraph.        &lt;a href=&quot;https://www.w3schools.com/html/html_links.asp&quot;&gt;on W3&lt;/a&gt;.    &lt;/p&gt;    &lt;h2&gt;Another heading&lt;/h2&gt;    &lt;p class=&quot;second&quot;&gt;      Just another paragraph    &lt;/p&gt;    &lt;img      id=&quot;test-image&quot;      src=&quot;https://www.w3schools.com/images/w3schools_green.jpg&quot;    /&gt;    &lt;form id=&quot;your-name&quot;&gt;      &lt;h2&gt;Your name here&lt;/h2&gt;      &lt;p class=&quot;first&quot;&gt;Please fill in this form :)&lt;/p&gt;      &lt;input type=&quot;text&quot; placeholder=&quot;Your name&quot; /&gt;      &lt;button&gt;OK!&lt;/button&gt;    &lt;/form&gt;  &lt;/body&gt;&lt;/html&gt;\n\nBasic CSSAs we already know, CSS is used to style elements and to create a layout for the overall page. And can be written right here in the HTML file using the style element.Since style element is not for visible content here on the page, so it would go right here into the head, because the head is basically, like settings of the page. And the style definitely counts as a setting.\nNow to style elements, we need to first select them. There are different types of selectors in CSS, the most basic one, is the element selector. With the element selector, we can simply select all elements of a certain type.\nFor example, the body. So we write body, and then curly braces,and then in here we can write the CSS declarations. Each CSS declaration has a property name, and then a value.\n123&lt;style&gt;      body &#123;background-color: powderblue;&#125;&lt;/style&gt;\nNow usually we write or CSS in an external CSS file. So just like we write JavaScript, in an external script, we do the same basically with CSS. So let’s create that separate CSS file.In VSCode using Command or Control B, and then, let’s call this file the style dot CSS.\n123body &#123;  background-color: powderblue;&#125;\nJust like we had to connect the JavaScript file to the HTML, we also have to select the CSS.\n1&lt;link href=&quot;style.css&quot; rel=&quot;stylesheet&quot; /&gt;\nHere use href again, which is the same attribute, as in the anchor element here, but don’t confuse anchor with link. This link does not create a clickable link, instead only to basically link CSS files to HTML files.\nLet’s now explore some more CSS properties.\n123456789101112body &#123;  background-color: powderblue;  font-family: Arial;  font-size: 20px;&#125;h1 &#123;  font-size: 35px;&#125;h2 &#123;  text-align: center;&#125;\nMeanwhile, the font family property is a property that gets inherited. So all the Child Elements of the body element, will automatically get this font family assigned to them. And that makes it very handy.Most properties to actually not inherit. But generally, all the properties that are related to fonts will inherit, also they can be overwritten them with our own selectors.Now let’s actually use the class names and Ids that set before to select elements.\n123456.first &#123;  color: red;&#125;#test-image &#123;  width: 300px;&#125;\nThe class selector is using the dot. The Id selector is using hash.\nAnother one we can use here is the border property, also called shorthand property. Because here we can set multiple values for just one property. For the border we can set the width, basically the thickness of the border, then we can set the style of the border, and then the color.\n12345#your-name &#123;  background-color: rgb(255, 220, 105);  border: 5px solid #444;  width: 400px;&#125;\n\n\nCSS Box ModelThe box model is one of the most fundamental parts of CSS. It’s the main factor that defines how elements are displayed on a webpage and also how they are sized. According to the box model, each and every element on a webpage can be seen as a rectangular box and each box can have a width, a height, padding, margins and a border.We can specify all these using CSS properties, but note that they are all optional. So there can be boxes with no margins or no paddings or no border at all.\n\nThis image shows how the box model works. Let’s break it down.\nFirst the content of a box is where all the text images and other content that we specify goes. We can easily define its height and with using the corresponding CSS properties.\nNext, the padding is a transparent area around the content but still inside of the box. We use paddings to create white space inside of a box. We can define the padding by specifying the padding property in CSS.\nThen, we can specify a border for any box and that border then goes around the padding and the content.\nAfter that, similar to the padding, we have the margin, but instead of being inside the box, the margin is white space that’s actually outside of the box itself. So we can think of margin as the space between boxes. For instance, if we want to create some space between two elements, we will simply use their margin properties.\nFinally, there is something called the fill area. Remember how the text content and images go inside the content box, well, the same does not apply for background images or the background color of a box. These properties will actually be applied not only to the content box, but to the entire fill area, which also includes the padding and the border, but not the margin.\nBy default, some elements get some margin automatically if we don’t define them. When we’re trying to style our page, usually what we do is that we reset all of the margins and all of the paddings on all elements before doing anything else. This is called a global reset.To do that, we need to select all the elements. And for that, we have a special selector and that is a star selector. With this, we can select all the elements on the page. \n12345* &#123;  margin: 0;  padding: 0;  box-sizing: border-box;&#125;\nbox-sizingBy default in the CSS box model, the width and height you assign to an element is applied only to the element’s content box. If the element has any border or padding, this is then added to the width and height to arrive at the size of the box that’s rendered on the screen. This means that when you set width and height, you have to adjust the value you give to allow for any border or padding that may be added. \nFor example, if you have four boxes with width: 25%;, if any has left or right padding or a left or right border, they will not by default fit on one line within the constraints of the parent container.The box-sizing CSS property sets how the total width and height of an element is calculated. It has 2 value: border-box and content-box.\n\nborder-box tells the browser to account for any border and padding in the values you specify for an element’s width and height. If you set an element’s width to 100 pixels, that 100 pixels will include any border or padding you added, and the content box will shrink to absorb that extra width. This typically makes it much easier to size elements. box-sizing: border-box is the default styling that browsers use for the table, select, and button elements, and for input elements whose type is radio, checkbox, reset, button, submit, color, or search.\n\ncontent-box gives you the default CSS box-sizing behavior. If you set an element’s width to 100 pixels, then the element’s content box will be 100 pixels wide, and the width of any border or padding will be added to the final rendered width, making the element wider than 100px.\n\n\nLet’s add margin and padding for body elements.\n12345678910111213141516171819202122232425262728body &#123;  background-color: powderblue;  font-family: Arial;  font-size: 20px;  padding: 50px;&#125;h1 &#123;  font-size: 35px;  margin-bottom: 25px;&#125;h2 &#123;  margin-bottom: 20px;  text-align: center;&#125;p &#123;  margin-bottom: 20px;&#125;#your-name &#123;  background-color: rgb(255, 220, 105);  border: 5px solid #444;  width: 400px;  padding: 25px;  margin-top: 30px;&#125;\nmarginThe margin property may be specified using one, two, three, or four values. Each value is a length, a percentage, or the keyword auto. Negative values draw the element closer to its neighbors than it would be by default.Elements’ top and bottom margins are sometimes collapsed into a single margin that is equal to the larger of the two margins. \n\nWhen one value is specified, it applies the same margin to all four sides.\nWhen two values are specified, the first margin applies to the top and bottom, the second to the left and right.\nWhen three values are specified, the first margin applies to the top, the second to the right and left, the third to the bottom.\nWhen four values are specified, the margins apply to the top, right, bottom, and left in that order (clockwise).\n\nThe margin-top CSS property sets the margin area on the top of an element. The margin-bottom CSS property sets the margin area on the bottom of an element. These properties have no effect on non-replaced inline elements, such as span or code.\ndescendant selector123#your-name h2 &#123;  color: olivedrab;&#125;\nThe descendant selector matches all elements that are descendants of a specified element.\nMeanwhile, the child selector selects all elements that are the children of a specified element.\n123#your-name &gt; h2 &#123;  color: olivedrab;&#125;\n\nThe difference between them, for instance, is div p will match the following example, but div &gt; p will not.\n1&lt;div&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt; &lt;!...\n\nChild &#x3D;&gt; an immediate descendant of an ancestor\nDescendant &#x3D;&gt; any element that is descended from a particular ancestor\n\nHere is the reference: CSS Selector Reference","dateCreated":"2022-12-06T00:46:08+08:00","dateModified":"2022-12-11T16:49:43+08:00","datePublished":"2022-12-06T00:46:08+08:00","description":"Basic HTMLHTML stands for hypertext markup language. We use it to describe the content of web pages basically, and an index.HTML is always the name of the main file in any project. \nAn HTML document is made out of elements and we write elements using an opening and closing tag. The closing tag has just the same name as the opening tag, but it has this slash here to close it. So every HTML document always has to start with the HTML opening tag and then close with the HTML closing tag.\n1&lt;h1&gt;This is a Heading&lt;/h1&gt;","headline":"HTML&CSS Note","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"},"publisher":{"@type":"Organization","name":"Rain","sameAs":[]},"url":"https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/","keywords":"frontend"}</script>
+    <meta name="description" content="Basic HTMLHTML stands for hypertext markup language. We use it to describe the content of web pages basically, and an index.HTML is always the name of the main file in any project.  An HTML document i">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="HTML&amp;CSS Note">
+<meta property="og:url" content="https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/index.html">
+<meta property="og:site_name" content="Rain&#39;s BLOG">
+<meta property="og:description" content="Basic HTMLHTML stands for hypertext markup language. We use it to describe the content of web pages basically, and an index.HTML is always the name of the main file in any project.  An HTML document i">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/css_box_model.png">
+<meta property="article:published_time" content="2022-12-05T16:46:08.000Z">
+<meta property="article:modified_time" content="2022-12-11T08:49:43.516Z">
+<meta property="article:author" content="Rain">
+<meta property="article:tag" content="frontend">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/css_box_model.png">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-deyemuu3b37vh25ias0pblnztkxabqshff6agygslsqrprld1dh04ekuro5o.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Rain&#39;s BLOG
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Rain2022debug"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            HTML&amp;CSS Note
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-12-06T00:46:08+08:00">
+	
+		    Dec 06, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">Table of Contents</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Basic-HTML-1"><span class="toc-text">Basic HTML</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML-Attribute"><span class="toc-text">HTML Attribute</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Class-amp-Id"><span class="toc-text">Class &amp; Id</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Basic-CSS"><span class="toc-text">Basic CSS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSS-Box-Model"><span class="toc-text">CSS Box Model</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#box-sizing"><span class="toc-text">box-sizing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#margin"><span class="toc-text">margin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#descendant-selector"><span class="toc-text">descendant selector</span></a></li></ol></li></ol>
+<h1 id="Basic-HTML-1"><a href="#Basic-HTML-1" class="headerlink" title="Basic HTML"></a>Basic HTML</h1><p>HTML stands for hypertext markup language. We use it to describe the content of web pages basically, and an index.HTML is always the name of the main file in any project. </p>
+<p>An HTML document is made out of elements and we write elements using an opening and closing tag. The closing tag has just the same name as the opening tag, but it has this slash here to close it. So every HTML document always has to start with the HTML opening tag and then close with the HTML closing tag.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is a Heading<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Here are 2 extensions can help to write code eaiser in VSCode, one is called auto renamed tag, another one that automatically closes a tag that it opened is auto close tag extension.</p>
+<p>So these two extensions that I have here, they are very useful for writing HTML.</p>
+<p>The main element in all HTML documents is always the HTML element. Then inside the HTML element, we always have the head and the body.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">            <span class="selector-tag">body</span> &#123;<span class="attribute">background-color</span>: powderblue;&#125;</span></span><br><span class="line"><span class="language-css">            <span class="selector-tag">h1</span>   &#123;<span class="attribute">color</span>: blue;&#125;</span></span><br><span class="line"><span class="language-css">            <span class="selector-tag">p</span>    &#123;<span class="attribute">color</span>: red;&#125;</span></span><br><span class="line"><span class="language-css">        </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Page Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is a Heading<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is a paragraph.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>This is always the structure that we use in HTML.</p>
+<p>Now, whatever we put into this head here is basically like the settings of the page. So it’s like describing the page. For example,  the title here, is what’s gonna be visible in Google Chrome. </p>
+<p>Other things that we put here in this head which is again like the settings of the page is CSS styles.<br>Then whatever we put into the body is what’s actually gonna be visible on the page.</p>
+<p>Use the H1 element, we can add a heading in the body. Meanwhile, you have H1, H2 all the way to H6.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Heading 1<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Heading 2<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>Heading 3<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>Heading 4<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h5</span>&gt;</span>Heading 5<span class="tag">&lt;/<span class="name">h5</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h6</span>&gt;</span>Heading 6<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>And they will have different styles automatically applied by the browser. </p>
+<p>So just like before, we put the extra content here between two tags. And different types of elements have different purposes. For example, H1 is to describe a heading. But we have other ones. For instance, we have the P element to describe a paragraph.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">This paragraph</span><br><span class="line">contains a lot of lines</span><br><span class="line">in the source code,</span><br><span class="line">but the browser </span><br><span class="line">ignores it.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">This paragraph</span><br><span class="line">contains      a lot of spaces</span><br><span class="line">in the source     code,</span><br><span class="line">but the    browser </span><br><span class="line">ignores it.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Now we can actually preview this page in Google Chrome.<br>You can always just open the HTML document itself, or with Live-server with VSCode.</p>
+<p>At last, we can actually create this bare bones structure of HTML in a very easy way in VS code. Howerver, basically type ! + tab in an empty HTML file, and like magic, all of the structure appears.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>So we still have the HTML,head and body tag and in there just like we had before.<br>Besides, we get this language here on HTML too. In this case, it’s telling the browser that we’re using the English language.</p>
+<h1 id="HTML-Attribute"><a href="#HTML-Attribute" class="headerlink" title="HTML Attribute"></a>HTML Attribute</h1><p>So what are attributes?<br>Well in HTML some elements can have attributes and these attributes basically describe elements.</p>
+<p>Let’s add this link element inside of the paragraph. And for that, we use the anchor element.<br>So there’s an a, and then in here we put a text that we want to be displayed on the page. But now how do we tell the browser where this link should actually point to?<br>That’s where the attributes come in.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>This is a paragraph.</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.w3schools.com/html/html_links.asp&quot;</span>&gt;</span>on W3<span class="tag">&lt;/<span class="name">a</span>&gt;</span>.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>So, in this case, we described this anchor element using the href attributes. href stands for hypertext reference.<br>Here you put the URL where this link should point to.</p>
+<p>Now here on the page, you can actually see that this link is right in line with the previous text. That’s why we call the anchor element an inline element. It flows in line with the rest of the text.<br>On the other hand, for example this h2 element is a so-called block element. Because as we see here, this heading is not in line with the text of the previous element. It created a new line which only contains this content of this heading.</p>
+<p>Let’s check out another element which needs attributes which is the image element.<br>For the image we use the img tag and then this source attribute. And then in here we can specify any image from the current working folder or we can also set an image URL.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://www.w3schools.com/images/w3schools_green.jpg&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The image element does not have a closing tag. It only has an opening tag which is a img. Then we don’t have a closing tag. And so we can close this opening tab by the end using this slash here at the end of the tag.<br>But it’s actually not mandatory, it works just the same without this one here.</p>
+<p>image doesn’t have a closing tag because we don’t really put any written content in here. It’s not like we say a test image or something and then close the image. That would make no sense. And so that’s why images don’t need the closing tag.</p>
+<p>As you see, different elements have different attributes. Thus the href attribute is not going to do anything on an image and the opposite is true for the source attribute. If we use source here on the anchor element, it’s not gonna have any effect.</p>
+<h2 id="Class-amp-Id"><a href="#Class-amp-Id" class="headerlink" title="Class &amp; Id"></a>Class &amp; Id</h2><p>Now there are two very important attributes that we can actually use on all elements and which we can use to identify them. And these are classes and ids. We use classes and ids to essentially name elements so that we can then select them in CSS in order to style them.<br>And actually we also use ids and classes to select elements from JavaScript when we do dumb manipulation. classes and ids are crucial to identifying elements and especially classes.<br>And here’s how that works.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;first&quot;</span>&gt;</span>This is a paragraph.</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.w3schools.com/html/html_links.asp&quot;</span>&gt;</span>on W3<span class="tag">&lt;/<span class="name">a</span>&gt;</span>.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Another heading<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;second&quot;</span>&gt;</span></span><br><span class="line">    Just another paragraph</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">&quot;test-image&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">src</span>=<span class="string">&quot;https://www.w3schools.com/images/w3schools_green.jpg&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>The difference between classes and ids is that ids have to be unique, So each id can only be used once on the page while classes can be used over and over again.</p>
+<p>Let’s create an HTML form so that we can use some more attributes.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;your-name&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Your name here<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;first&quot;</span>&gt;</span>Please fill in this form :)<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;Your name&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>OK!<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>We want the contents of this forum to be in a box. And there are many ways of creating boxes in HTML. The most generic box is a div.<br>Nevertheless in HTML we have a special element for that, which is instead of div, we use form. Though it looks exactly the same, it is more semantic.<br>What semantic means is that the form element better describes the content that is inside of the box than just the generic box that is the div. A semantic element will clearly describes its meaning to both the browser and the developer.</p>
+<p>Examples of non-semantic elements: div and span - Tells nothing about its content.<br>Examples of semantic elements: form, table, and article - Clearly defines its content.</p>
+<p>The div element is really just a generic box which has no meaning at all. Therefore it’s usually not a good idea for many reasons, for example for SEO, when Google searches your page, it’s better if it knows exactly what each element means than just having generic boxes without any meaning at all.</p>
+<p>Below it the full version code.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">            <span class="selector-tag">body</span> &#123;<span class="attribute">background-color</span>: powderblue;&#125;</span></span><br><span class="line"><span class="language-css">            <span class="selector-tag">h1</span>   &#123;<span class="attribute">color</span>: blue;&#125;</span></span><br><span class="line"><span class="language-css">            <span class="selector-tag">p</span>    &#123;<span class="attribute">color</span>: red;&#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Page Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>This is a Heading<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;first&quot;</span>&gt;</span>This is a paragraph.</span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.w3schools.com/html/html_links.asp&quot;</span>&gt;</span>on W3<span class="tag">&lt;/<span class="name">a</span>&gt;</span>.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Another heading<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;second&quot;</span>&gt;</span></span><br><span class="line">      Just another paragraph</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">      <span class="attr">id</span>=<span class="string">&quot;test-image&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://www.w3schools.com/images/w3schools_green.jpg&quot;</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;your-name&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Your name here<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;first&quot;</span>&gt;</span>Please fill in this form :)<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;Your name&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span>&gt;</span>OK!<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Basic-CSS"><a href="#Basic-CSS" class="headerlink" title="Basic CSS"></a>Basic CSS</h1><p>As we already know, CSS is used to style elements and to create a layout for the overall page. And can be written right here in the HTML file using the style element.<br>Since style element is not for visible content here on the page, so it would go right here into the head, because the head is basically, like settings of the page. And the style definitely counts as a setting.</p>
+<p>Now to style elements, we need to first select them. There are different types of selectors in CSS, the most basic one, is the element selector. With the element selector, we can simply select all elements of a certain type.</p>
+<p>For example, the body. So we write body, and then curly braces,and then in here we can write the CSS declarations. Each CSS declaration has a property name, and then a value.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">body</span> &#123;<span class="attribute">background-color</span>: powderblue;&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Now usually we write or CSS in an external CSS file. So just like we write JavaScript, in an external script, we do the same basically with CSS. So let’s create that separate CSS file.<br>In VSCode using Command or Control B, and then, let’s call this file the style dot CSS.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: powderblue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Just like we had to connect the JavaScript file to the HTML, we also have to select the CSS.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Here use href again, which is the same attribute, as in the anchor element here, but don’t confuse anchor with link. This link does not create a clickable link, instead only to basically link CSS files to HTML files.</p>
+<p>Let’s now explore some more CSS properties.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: powderblue;</span><br><span class="line">  <span class="attribute">font-family</span>: Arial;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">35px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Meanwhile, the font family property is a property that gets inherited. So all the Child Elements of the body element, will automatically get this font family assigned to them. And that makes it very handy.<br>Most properties to actually not inherit. But generally, all the properties that are related to fonts will inherit, also they can be overwritten them with our own selectors.<br>Now let’s actually use the class names and Ids that set before to select elements.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.first</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#test-image</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The class selector is using the dot. The Id selector is using hash.</p>
+<p>Another one we can use here is the border property, also called shorthand property. Because here we can set multiple values for just one property. For the border we can set the width, basically the thickness of the border, then we can set the style of the border, and then the color.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#your-name</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">220</span>, <span class="number">105</span>);</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">5px</span> solid <span class="number">#444</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="CSS-Box-Model"><a href="#CSS-Box-Model" class="headerlink" title="CSS Box Model"></a>CSS Box Model</h1><p>The box model is one of the most fundamental parts of CSS. It’s the main factor that defines how elements are displayed on a webpage and also how they are sized. According to the box model, each and every element on a webpage can be seen as a rectangular box and each box can have a width, a height, padding, margins and a border.<br>We can specify all these using CSS properties, but note that they are all optional. So there can be boxes with no margins or no paddings or no border at all.</p>
+<img src="/2022/12/06/HTML-CSS-Note/css_box_model.png" class="" title="This is an image">
+<p>This image shows how the box model works. Let’s break it down.</p>
+<p>First the content of a box is where all the text images and other content that we specify goes. We can easily define its height and with using the corresponding CSS properties.</p>
+<p>Next, the padding is a transparent area around the content but still inside of the box. We use paddings to create white space inside of a box. We can define the padding by specifying the padding property in CSS.</p>
+<p>Then, we can specify a border for any box and that border then goes around the padding and the content.</p>
+<p>After that, similar to the padding, we have the margin, but instead of being inside the box, the margin is white space that’s actually outside of the box itself. So we can think of margin as the space between boxes. For instance, if we want to create some space between two elements, we will simply use their margin properties.</p>
+<p>Finally, there is something called the fill area. Remember how the text content and images go inside the content box, well, the same does not apply for background images or the background color of a box. These properties will actually be applied not only to the content box, but to the entire fill area, which also includes the padding and the border, but not the margin.</p>
+<p>By default, some elements get some margin automatically if we don’t define them. When we’re trying to style our page, usually what we do is that we reset all of the margins and all of the paddings on all elements before doing anything else. This is called a global reset.<br>To do that, we need to select all the elements. And for that, we have a special selector and that is a star selector. With this, we can select all the elements on the page. </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="box-sizing"><a href="#box-sizing" class="headerlink" title="box-sizing"></a>box-sizing</h2><p>By default in the CSS box model, the width and height you assign to an element is applied only to the element’s content box. If the element has any border or padding, this is then added to the width and height to arrive at the size of the box that’s rendered on the screen. This means that when you set width and height, you have to adjust the value you give to allow for any border or padding that may be added. </p>
+<p>For example, if you have four boxes with width: 25%;, if any has left or right padding or a left or right border, they will not by default fit on one line within the constraints of the parent container.<br>The box-sizing CSS property sets how the total width and height of an element is calculated. It has 2 value: border-box and content-box.<br><br /></p>
+<ul>
+<li><p>border-box tells the browser to account for any border and padding in the values you specify for an element’s width and height. If you set an element’s width to 100 pixels, that 100 pixels will include any border or padding you added, and the content box will shrink to absorb that extra width. This typically makes it much easier to size elements. box-sizing: border-box is the default styling that browsers use for the table, select, and button elements, and for input elements whose type is radio, checkbox, reset, button, submit, color, or search.</p>
+</li>
+<li><p>content-box gives you the default CSS box-sizing behavior. If you set an element’s width to 100 pixels, then the element’s content box will be 100 pixels wide, and the width of any border or padding will be added to the final rendered width, making the element wider than 100px.</p>
+</li>
+</ul>
+<p>Let’s add margin and padding for body elements.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: powderblue;</span><br><span class="line">  <span class="attribute">font-family</span>: Arial;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">35px</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">25px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#your-name</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">220</span>, <span class="number">105</span>);</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">5px</span> solid <span class="number">#444</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">25px</span>;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">30px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="margin"><a href="#margin" class="headerlink" title="margin"></a>margin</h2><p>The margin property may be specified using one, two, three, or four values. Each value is a length, a percentage, or the keyword auto. Negative values draw the element closer to its neighbors than it would be by default.<br>Elements’ top and bottom margins are sometimes collapsed into a single margin that is equal to the larger of the two margins. </p>
+<ul>
+<li>When one value is specified, it applies the same margin to all four sides.</li>
+<li>When two values are specified, the first margin applies to the top and bottom, the second to the left and right.</li>
+<li>When three values are specified, the first margin applies to the top, the second to the right and left, the third to the bottom.</li>
+<li>When four values are specified, the margins apply to the top, right, bottom, and left in that order (clockwise).</li>
+</ul>
+<p>The margin-top CSS property sets the margin area on the top of an element. The margin-bottom CSS property sets the margin area on the bottom of an element. These properties have no effect on non-replaced inline elements, such as span or code.</p>
+<h2 id="descendant-selector"><a href="#descendant-selector" class="headerlink" title="descendant selector"></a>descendant selector</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#your-name</span> <span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: olivedrab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The descendant selector matches all elements that are descendants of a specified element.</p>
+<p>Meanwhile, the child selector selects all elements that are the children of a specified element.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#your-name</span> &gt; <span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: olivedrab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The difference between them, for instance, is div p will match the following example, but div &gt; p will not.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span> &lt;!...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Child &#x3D;&gt; an immediate descendant of an ancestor</li>
+<li>Descendant &#x3D;&gt; any element that is descended from a particular ancestor</li>
+</ul>
+<p>Here is the reference: <a target="_blank" rel="noopener" href="https://www.w3schools.com/cssref/css_selectors.php">CSS Selector Reference</a></p>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/frontend/" rel="tag">frontend</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/12/DOM-BOM-Note/"
+                    data-tooltip="DOM &amp; BOM Note"
+                    aria-label="PREVIOUS: DOM &amp; BOM Note"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Rain. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/12/DOM-BOM-Note/"
+                    data-tooltip="DOM &amp; BOM Note"
+                    aria-label="PREVIOUS: DOM &amp; BOM Note"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/06/HTML-CSS-Note/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Rain</h4>
+        
+            <div id="about-card-bio"><p>404</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>SDE</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-bym1pojsdhirnpkhctdxarml2turvkjeaykax5h1dckej6jtzqgiml57ke5z.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

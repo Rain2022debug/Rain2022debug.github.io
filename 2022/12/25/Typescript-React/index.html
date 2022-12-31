@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Rain&#39;s BLOG">
+    <title>TypeScript + React - Rain&#39;s BLOG</title>
+    <meta name="author" content="Rain">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Rain","sameAs":[]},"articleBody":"\n\nInstallTo start a new Create React App project with TypeScript, you can run:\n1npx create-react-app my-app --template typescript\nor\n1yarn create react-app my-app --template typescript\nTo add TypeScript to an existing Create React App project, first install it:\n1npm install --save typescript @types/node @types/react @types/react-dom @types/jest\nor\n1yarn add typescript @types/node @types/react @types/react-dom @types/jest\nNext, rename any file to be a TypeScript file (e.g. src&#x2F;index.js to src&#x2F;index.tsx) and restart your development server.Reference: React Reference\ntsc(the TypeScript compiler)TypeBase TypeThe primitives: string,number,and boolean.JavaScript has three very commonly used primitives: string, number, and boolean. Each has a corresponding type in TypeScript. As you might expect, these are the same names you’d see if you used the JavaScript typeof operator on a value of those types:\n\nstring represents string values like “Hello, world”\nnumber is for numbers like 42. JavaScript does not have a special runtime value for integers, so there’s no equivalent to int or float: everything is simply number\nboolean is for the two values true and false\n\nThe type names String, Number, and Boolean (starting with capital letters) are legal, but refer to some special built-in types that will very rarely appear in your code. Always use string, number, or boolean for types.TypeScriptLang Reference: Link\nArray &amp; ObjectArrayTo specify the type of an array like [1, 2, 3], you can use the syntax number[]; this syntax works for any type (e.g. string[] is an array of strings, and so on). You may also see this written as Array&lt; number &gt;, which means the same thing. \nnumber[] is the TypeScript notation for saying “this is an array of numbers”. But actually, number[] is just syntactic sugar. The actual type is Array. ALL arrays are of the Array type.BUT: Since an array type really only makes sense if we also describe the type of items in the array, Array actually is a generic type.\nTypeScript would be able to infer array type relying on that what we write:\n1let numbers = [1, 2, 3];\nBut if we want to explicitly set a type, we could do it like this:\n1let numbers: Array&lt;number&gt; = [1, 2, 3];\nOf course it can be a bit annoying to write this rather long and clunky type, that’s why we have this alternative (syntactic sugar) for arrays:\n1let numbers: number[] = [1, 2, 3];\nObjectApart from primitives, the most common sort of type you’ll encounter is an object type. This refers to any JavaScript value with properties, which is almost all of them! To define an object type, we simply list its properties and their types.\nFor example, here’s a function that takes a point-like object:\n123456// The parameter&#x27;s type annotation is an object typefunction printCoord(pt: &#123; x: number; y: number &#125;) &#123;  console.log(&quot;The coordinate&#x27;s x value is &quot; + pt.x);  console.log(&quot;The coordinate&#x27;s y value is &quot; + pt.y);&#125;printCoord(&#123; x: 3, y: 7 &#125;);\nHere, we annotated the parameter with a type with two properties - x and y - which are both of type number. You can use , or ; to separate the properties, and the last separator is optional either way.\nThe type part of each property is also optional. If you don’t specify a type, it will be assumed to be any.\nObject types can also specify that some or all of their properties are optional. To do this, add a ? after the property name:\n123456function printName(obj: &#123; first: string; last?: string &#125;) &#123;  // ...&#125;// Both OKprintName(&#123; first: &quot;Bob&quot; &#125;);printName(&#123; first: &quot;Alice&quot;, last: &quot;Alisson&quot; &#125;);\nType InferenceBy default, TypeScript tries to infer as many types as possible. So it tries to know which types are used where, without you explicitly stating those types. Which means that you need to write less code.\n123let course = &#x27;React&#x27;;course = 12341;//error: course is assigned to string type\nType AssertionsSometimes you will have information about the type of a value that TypeScript can’t know about.\nFor example, if you’re using document.getElementById, TypeScript only knows that this will return some kind of HTMLElement, but you might know that your page will always have an HTMLCanvasElement with a given ID.\nIn this situation, you can use a type assertion to specify a more specific type:\n1const myCanvas = document.getElementById(&quot;main_canvas&quot;) as HTMLCanvasElement;\nLike a type annotation, type assertions are removed by the compiler and won’t affect the runtime behavior of your code.\nYou can also use the angle-bracket syntax (except if the code is in a .tsx file), which is equivalent:\n1const myCanvas = &lt;HTMLCanvasElement&gt;document.getElementById(&quot;main_canvas&quot;);\nUnion TypesA union type is a type formed from two or more other types, representing values that may be any one of those types. We refer to each of these types as the union’s members.\n12let course: string | number = &#x27;React&#x27;;course = 12341;\nTypeScript will only allow an operation if it is valid for every member of the union. For example, if you have the union string | number, you can’t use methods that are only available on string:\n1234function printId(id: number | string) &#123;  console.log(id.toUpperCase());// error: Property &#x27;toUpperCase&#x27; does not exist on type &#x27;string | number&#x27;. Property &#x27;toUpperCase&#x27; does not exist on type &#x27;number&#x27;.&#125;\nLiteral TypesIn addition to the general types string and number, we can refer to specific strings and numbers in type positions.\n12345678let changingString = &quot;Hello World&quot;;changingString = &quot;Olá Mundo&quot;;// Because `changingString` can represent any possible string, that is how TypeScript describes it in the type system//let changingString: string const constantString = &quot;Hello World&quot;;// Because `constantString` can only represent 1 possible string, it has a literal type representation//const constantString: &quot;Hello World&quot;\n123456let x: &quot;hello&quot; = &quot;hello&quot;;// OKx = &quot;hello&quot;;// ...x = &quot;howdy&quot;;//error: Type &#x27;&quot;howdy&quot;&#x27; is not assignable to type &#x27;&quot;hello&quot;&#x27;.\nNumeric literal types work the same way:\n123function compare(a: string, b: string): -1 | 0 | 1 &#123;  return a === b ? 0 : a &gt; b ? 1 : -1;&#125;\nWhen you initialize a variable with an object, TypeScript assumes that the properties of that object might change values later. For example, if you wrote code like this:\n1234const obj = &#123; counter: 0 &#125;;if (someCondition) &#123;  obj.counter = 1;&#125;\nTypeScript doesn’t assume the assignment of 1 to a field which previously had 0 is an error. Another way of saying this is that obj.counter must have the type number, not 0, because types are used to determine both reading and writing behavior.\nThe same applies to strings:\n123const req = &#123; url: &quot;https://example.com&quot;, method: &quot;GET&quot; &#125;;handleRequest(req.url, req.method);//error: Argument of type &#x27;string&#x27; is not assignable to parameter of type &#x27;&quot;GET&quot; | &quot;POST&quot;&#x27;.\nIn the above example req.method is inferred to be string, not “GET”. Because code can be evaluated between the creation of req and the call of handleRequest which could assign a new string like “GUESS” to req.method, TypeScript considers this code to have an error.\nThere are two ways to work around this.\n1234// Change 1:const req = &#123; url: &quot;https://example.com&quot;, method: &quot;GET&quot; as &quot;GET&quot; &#125;;// Change 2handleRequest(req.url, req.method as &quot;GET&quot;);\nYou can use as const to convert the entire object to be type literals:\n12const req = &#123; url: &quot;https://example.com&quot;, method: &quot;GET&quot; &#125; as const;handleRequest(req.url, req.method);\nThe as const suffix acts like const but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like string or number.\nType AliasesA type alias is exactly that - a name for any type. \n12345678910111213type Person = &#123;  name: string;  age: number;&#125;;let person: Person;person = &#123;  name: &#x27;Max&#x27;,  age: 32,&#125;;let people: Person[];\nYou can actually use a type alias to give a name to any type at all, not just an object type. For example, a type alias can name a union type:\n1type ID = number | string;\nInterfaceAn interface declaration is another way to name an object type:\n1234567891011interface Point &#123;  x: number;  y: number;&#125; function printCoord(pt: Point) &#123;  console.log(&quot;The coordinate&#x27;s x value is &quot; + pt.x);  console.log(&quot;The coordinate&#x27;s y value is &quot; + pt.y);&#125; printCoord(&#123; x: 100, y: 100 &#125;);\nType aliases and interfaces are very similar, and in many cases you can choose between them freely. Almost all features of an interface are available in type, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.\nFunctionFunctions are the primary means of passing data around in JavaScript. TypeScript allows you to specify the types of both the input and output values of functions.\nFunction TypesWhen you declare a function, you can add type annotations after each parameter to declare what types of parameters the function accepts. Parameter type annotations go after the parameter name:\n1234// Parameter type annotationfunction greet(name: string) &#123;  console.log(&quot;Hello, &quot; + name.toUpperCase() + &quot;!!&quot;);&#125;\nYou can also add return type annotations. Return type annotations appear after the parameter list:\n123function getFavoriteNumber(): number &#123;  return 26;&#125;\nAnonymous functions are a little bit different from function declarations. When a function appears in a place where TypeScript can determine how it’s going to be called, the parameters of that function are automatically given types.\n1234567// No type annotations here, but TypeScript can spot the bugconst names = [&quot;Alice&quot;, &quot;Bob&quot;, &quot;Eve&quot;];// Contextual typing for functionnames.forEach(function (s) &#123;  console.log(s.toUppercase());//error: Property &#x27;toUppercase&#x27; does not exist on type &#x27;string&#x27;. Did you mean &#x27;toUpperCase&#x27;?&#125;);\nEven though the parameter s didn’t have a type annotation, TypeScript used the types of the forEach function, along with the inferred type of the array, to determine the type s will have.\nThis process is called contextual typing because the context that the function occurred within informs what type it should have.\nFunction Component props12345678910111213import React from &#x27;react&#x27;;const Todos: React.FC&lt;&#123; items: string[] &#125;&gt; = (props) =&gt; &#123;  return (    &lt;ul&gt;      &#123;props.items.map((item) =&gt; (        &lt;li key=&#123;item&#125;&gt;&#123;item&#125;&lt;/li&gt;      ))&#125;    &lt;/ul&gt;  );&#125;;export default Todos;\nGenericsIn languages like C# and Java, one of the main tools in the toolbox for creating reusable components is generics, that is, being able to create a component that can work over a variety of types rather than a single one. This allows users to consume these components and use their own types.\n123function identity&lt;Type&gt;(arg: Type): Type &#123;  return arg;&#125;\nThis Type allows us to capture the type the user provides (e.g. number), so that we can use that information later. Here, we use Type again as the return type. On inspection, we can now see the same type is used for the argument and the return type. This allows us to traffic that type information in one side of the function and out the other.\nWe can not just use the angle brackets to define a generic type but also to USE a generic type and explicitly set the placeholder type that should be used - sometimes this is required if TypeScript is not able to infer the (correct) type.we could’ve also set the concrete type for our function placeholder T explicitly:\n12345function insertAtBeginning&lt;T&gt;(array: T[], value: T) &#123;  const newArray = [value, ...array];  return newArray;&#125;const stringArray = insertAtBeginning&lt;string&gt;([&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;], &#x27;d&#x27;);\nContext API1234567891011121314151617181920212223242526272829303132333435363738394041424344454647import React, &#123; useState &#125; from &#x27;react&#x27;;import Todo from &#x27;../models/todo&#x27;;type TodosContextObj = &#123;  items: Todo[];  addTodo: (text: string) =&gt; void;  removeTodo: (id: string) =&gt; void;&#125;;export const TodosContext = React.createContext&lt;TodosContextObj&gt;(&#123;  items: [],  addTodo: () =&gt; &#123;&#125;,  removeTodo: (id: string) =&gt; &#123;&#125;,&#125;);const TodosContextProvider: React.FC = (props) =&gt; &#123;  const [todos, setTodos] = useState&lt;Todo[]&gt;([]);  const addTodoHandler = (todoText: string) =&gt; &#123;    const newTodo = new Todo(todoText);    setTodos((prevTodos) =&gt; &#123;      return prevTodos.concat(newTodo);    &#125;);  &#125;;  const removeTodoHandler = (todoId: string) =&gt; &#123;    setTodos((prevTodos) =&gt; &#123;      return prevTodos.filter((todo) =&gt; todo.id !== todoId);    &#125;);  &#125;;  const contextValue: TodosContextObj = &#123;    items: todos,    addTodo: addTodoHandler,    removeTodo: removeTodoHandler,  &#125;;  return (    &lt;TodosContext.Provider value=&#123;contextValue&#125;&gt;      &#123;props.children&#125;    &lt;/TodosContext.Provider&gt;  );&#125;;export default TodosContextProvider;\ntsconfig.jsonThe presence of a tsconfig.json file in a directory indicates that the directory is the root of a TypeScript project. The tsconfig.json file specifies the root files and the compiler options required to compile the project.\nJavaScript projects can use a jsconfig.json file instead, which acts almost the same but has some JavaScript-related compiler flags enabled by default.Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at tsconfig bases. These are tsconfig.json files which your project extends from which simplifies your tsconfig.json by handling the runtime support.","dateCreated":"2022-12-25T13:56:49+08:00","dateModified":"2022-12-31T19:44:14+08:00","datePublished":"2022-12-25T13:56:49+08:00","description":"TypeScript is a so-called “superset” to JavaScript. It’s a programming language which builds up on JavaScript.The core programming language still, is JavaScript. So the base JavaScript syntax you know, how you write JavaScript code, if statements, for loops, objects, all that does not change.But TypeScript then adds more features to the JavaScript syntax. Unlike React, TypeScript is not a library for JavaScript, so it doesn’t use JavaScript features to build new features on top of them, to build functionalities around them.But instead it extends the core JavaScript syntax, and most importantly, it adds static typing to JavaScript. And that’s also where the name comes from, TypeScript.It adds static typing to JavaScript, because JavaScript on its own is actually dynamically typed.","headline":"TypeScript + React","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://rain2022debug.github.io/2022/12/25/Typescript-React/"},"publisher":{"@type":"Organization","name":"Rain","sameAs":[]},"url":"https://rain2022debug.github.io/2022/12/25/Typescript-React/","keywords":"frontend"}</script>
+    <meta name="description" content="TypeScript is a so-called “superset” to JavaScript. It’s a programming language which builds up on JavaScript.The core programming language still, is JavaScript. So the base JavaScript syntax you know">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="TypeScript + React">
+<meta property="og:url" content="https://rain2022debug.github.io/2022/12/25/Typescript-React/index.html">
+<meta property="og:site_name" content="Rain&#39;s BLOG">
+<meta property="og:description" content="TypeScript is a so-called “superset” to JavaScript. It’s a programming language which builds up on JavaScript.The core programming language still, is JavaScript. So the base JavaScript syntax you know">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-25T05:56:49.000Z">
+<meta property="article:modified_time" content="2022-12-31T11:44:14.859Z">
+<meta property="article:author" content="Rain">
+<meta property="article:tag" content="frontend">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-deyemuu3b37vh25ias0pblnztkxabqshff6agygslsqrprld1dh04ekuro5o.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Rain&#39;s BLOG
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Rain2022debug"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            TypeScript + React
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-12-25T13:56:49+08:00">
+	
+		    Dec 25, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">Table of Contents</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Install"><span class="toc-text">Install</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tsc-the-TypeScript-compiler"><span class="toc-text">tsc(the TypeScript compiler)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Type"><span class="toc-text">Type</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Base-Type"><span class="toc-text">Base Type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Array-amp-Object"><span class="toc-text">Array &amp; Object</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Array"><span class="toc-text">Array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object"><span class="toc-text">Object</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Type-Inference"><span class="toc-text">Type Inference</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Type-Assertions"><span class="toc-text">Type Assertions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Union-Types"><span class="toc-text">Union Types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Literal-Types"><span class="toc-text">Literal Types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Type-Aliases"><span class="toc-text">Type Aliases</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Interface"><span class="toc-text">Interface</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Function"><span class="toc-text">Function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Types"><span class="toc-text">Function Types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Component-props"><span class="toc-text">Function Component props</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Generics"><span class="toc-text">Generics</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Context-API"><span class="toc-text">Context API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tsconfig-json"><span class="toc-text">tsconfig.json</span></a></li></ol>
+<h1 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h1><p>To start a new Create React App project with TypeScript, you can run:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx create-react-app my-app --template typescript</span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn create react-app my-app --template typescript</span><br></pre></td></tr></table></figure>
+<p>To add TypeScript to an existing Create React App project, first install it:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save typescript @types/node @types/react @types/react-dom @types/jest</span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add typescript @types/node @types/react @types/react-dom @types/jest</span><br></pre></td></tr></table></figure>
+<p>Next, rename any file to be a TypeScript file (e.g. src&#x2F;index.js to src&#x2F;index.tsx) and restart your development server.<br>Reference: <a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/adding-typescript/">React Reference</a></p>
+<h1 id="tsc-the-TypeScript-compiler"><a href="#tsc-the-TypeScript-compiler" class="headerlink" title="tsc(the TypeScript compiler)"></a>tsc(the TypeScript compiler)</h1><h1 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h1><h2 id="Base-Type"><a href="#Base-Type" class="headerlink" title="Base Type"></a>Base Type</h2><p>The primitives: string,number,and boolean.<br>JavaScript has three very commonly used primitives: string, number, and boolean. Each has a corresponding type in TypeScript. As you might expect, these are the same names you’d see if you used the JavaScript typeof operator on a value of those types:</p>
+<ul>
+<li>string represents string values like “Hello, world”</li>
+<li>number is for numbers like 42. JavaScript does not have a special runtime value for integers, so there’s no equivalent to int or float: everything is simply number</li>
+<li>boolean is for the two values true and false</li>
+</ul>
+<p>The type names String, Number, and Boolean (starting with capital letters) are legal, but refer to some special built-in types that will very rarely appear in your code. Always use string, number, or boolean for types.<br>TypeScriptLang Reference: <a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html">Link</a></p>
+<h2 id="Array-amp-Object"><a href="#Array-amp-Object" class="headerlink" title="Array &amp; Object"></a>Array &amp; Object</h2><h3 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h3><p>To specify the type of an array like [1, 2, 3], you can use the syntax number[]; this syntax works for any type (e.g. string[] is an array of strings, and so on). You may also see this written as Array&lt; number &gt;, which means the same thing. </p>
+<p>number[] is the TypeScript notation for saying “this is an array of numbers”. But actually, number[] is just syntactic sugar. The actual type is Array. ALL arrays are of the Array type.<br>BUT: Since an array type really only makes sense if we also describe the type of items in the array, Array actually is a generic type.</p>
+<p>TypeScript would be able to infer array type relying on that what we write:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+<p>But if we want to explicitly set a type, we could do it like this:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">numbers</span>: <span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+<p>Of course it can be a bit annoying to write this rather long and clunky type, that’s why we have this alternative (syntactic sugar) for arrays:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">numbers</span>: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h3><p>Apart from primitives, the most common sort of type you’ll encounter is an object type. This refers to any JavaScript value with properties, which is almost all of them! To define an object type, we simply list its properties and their types.</p>
+<p>For example, here’s a function that takes a point-like object:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The parameter&#x27;s type annotation is an object type</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printCoord</span>(<span class="params">pt: &#123; x: <span class="built_in">number</span>; y: <span class="built_in">number</span> &#125;</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;The coordinate&#x27;s x value is &quot;</span> + pt.<span class="property">x</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;The coordinate&#x27;s y value is &quot;</span> + pt.<span class="property">y</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">printCoord</span>(&#123; <span class="attr">x</span>: <span class="number">3</span>, <span class="attr">y</span>: <span class="number">7</span> &#125;);</span><br></pre></td></tr></table></figure>
+<p>Here, we annotated the parameter with a type with two properties - x and y - which are both of type number. You can use , or ; to separate the properties, and the last separator is optional either way.</p>
+<p>The type part of each property is also optional. If you don’t specify a type, it will be assumed to be any.</p>
+<p>Object types can also specify that some or all of their properties are optional. To do this, add a ? after the property name:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">printName</span>(<span class="params">obj: &#123; first: <span class="built_in">string</span>; last?: <span class="built_in">string</span> &#125;</span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Both OK</span></span><br><span class="line"><span class="title function_">printName</span>(&#123; <span class="attr">first</span>: <span class="string">&quot;Bob&quot;</span> &#125;);</span><br><span class="line"><span class="title function_">printName</span>(&#123; <span class="attr">first</span>: <span class="string">&quot;Alice&quot;</span>, <span class="attr">last</span>: <span class="string">&quot;Alisson&quot;</span> &#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Type-Inference"><a href="#Type-Inference" class="headerlink" title="Type Inference"></a>Type Inference</h2><p>By default, TypeScript tries to infer as many types as possible. So it tries to know which types are used where, without you explicitly stating those types. Which means that you need to write less code.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> course = <span class="string">&#x27;React&#x27;</span>;</span><br><span class="line">course = <span class="number">12341</span>;</span><br><span class="line"><span class="comment">//error: course is assigned to string type</span></span><br></pre></td></tr></table></figure>
+<h2 id="Type-Assertions"><a href="#Type-Assertions" class="headerlink" title="Type Assertions"></a>Type Assertions</h2><p>Sometimes you will have information about the type of a value that TypeScript can’t know about.</p>
+<p>For example, if you’re using document.getElementById, TypeScript only knows that this will return some kind of HTMLElement, but you might know that your page will always have an HTMLCanvasElement with a given ID.</p>
+<p>In this situation, you can use a type assertion to specify a more specific type:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myCanvas = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;main_canvas&quot;</span>) <span class="keyword">as</span> <span class="title class_">HTMLCanvasElement</span>;</span><br></pre></td></tr></table></figure>
+<p>Like a type annotation, type assertions are removed by the compiler and won’t affect the runtime behavior of your code.</p>
+<p>You can also use the angle-bracket syntax (except if the code is in a .tsx file), which is equivalent:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myCanvas = &lt;<span class="title class_">HTMLCanvasElement</span>&gt;<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;main_canvas&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Union-Types"><a href="#Union-Types" class="headerlink" title="Union Types"></a>Union Types</h2><p>A union type is a type formed from two or more other types, representing values that may be any one of those types. We refer to each of these types as the union’s members.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">course</span>: <span class="built_in">string</span> | <span class="built_in">number</span> = <span class="string">&#x27;React&#x27;</span>;</span><br><span class="line">course = <span class="number">12341</span>;</span><br></pre></td></tr></table></figure>
+<p>TypeScript will only allow an operation if it is valid for every member of the union. For example, if you have the union string | number, you can’t use methods that are only available on string:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">printId</span>(<span class="params">id: <span class="built_in">number</span> | <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(id.<span class="title function_">toUpperCase</span>());</span><br><span class="line"><span class="comment">// error: Property &#x27;toUpperCase&#x27; does not exist on type &#x27;string | number&#x27;. Property &#x27;toUpperCase&#x27; does not exist on type &#x27;number&#x27;.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Literal-Types"><a href="#Literal-Types" class="headerlink" title="Literal Types"></a>Literal Types</h2><p>In addition to the general types string and number, we can refer to specific strings and numbers in type positions.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> changingString = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">changingString = <span class="string">&quot;Olá Mundo&quot;</span>;</span><br><span class="line"><span class="comment">// Because `changingString` can represent any possible string, that is how TypeScript describes it in the type system</span></span><br><span class="line"><span class="comment">//let changingString: string</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> constantString = <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line"><span class="comment">// Because `constantString` can only represent 1 possible string, it has a literal type representation</span></span><br><span class="line"><span class="comment">//const constantString: &quot;Hello World&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>: <span class="string">&quot;hello&quot;</span> = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="comment">// OK</span></span><br><span class="line">x = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">x = <span class="string">&quot;howdy&quot;</span>;</span><br><span class="line"><span class="comment">//error: Type &#x27;&quot;howdy&quot;&#x27; is not assignable to type &#x27;&quot;hello&quot;&#x27;.</span></span><br></pre></td></tr></table></figure>
+<p>Numeric literal types work the same way:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">compare</span>(<span class="params">a: <span class="built_in">string</span>, b: <span class="built_in">string</span></span>): -<span class="number">1</span> | <span class="number">0</span> | <span class="number">1</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a === b ? <span class="number">0</span> : a &gt; b ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When you initialize a variable with an object, TypeScript assumes that the properties of that object might change values later. For example, if you wrote code like this:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">counter</span>: <span class="number">0</span> &#125;;</span><br><span class="line"><span class="keyword">if</span> (someCondition) &#123;</span><br><span class="line">  obj.<span class="property">counter</span> = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>TypeScript doesn’t assume the assignment of 1 to a field which previously had 0 is an error. Another way of saying this is that obj.counter must have the type number, not 0, because types are used to determine both reading and writing behavior.</p>
+<p>The same applies to strings:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> req = &#123; <span class="attr">url</span>: <span class="string">&quot;https://example.com&quot;</span>, <span class="attr">method</span>: <span class="string">&quot;GET&quot;</span> &#125;;</span><br><span class="line"><span class="title function_">handleRequest</span>(req.<span class="property">url</span>, req.<span class="property">method</span>);</span><br><span class="line"><span class="comment">//error: Argument of type &#x27;string&#x27; is not assignable to parameter of type &#x27;&quot;GET&quot; | &quot;POST&quot;&#x27;.</span></span><br></pre></td></tr></table></figure>
+<p>In the above example req.method is inferred to be string, not “GET”. Because code can be evaluated between the creation of req and the call of handleRequest which could assign a new string like “GUESS” to req.method, TypeScript considers this code to have an error.</p>
+<p>There are two ways to work around this.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Change 1:</span></span><br><span class="line"><span class="keyword">const</span> req = &#123; <span class="attr">url</span>: <span class="string">&quot;https://example.com&quot;</span>, <span class="attr">method</span>: <span class="string">&quot;GET&quot;</span> <span class="keyword">as</span> <span class="string">&quot;GET&quot;</span> &#125;;</span><br><span class="line"><span class="comment">// Change 2</span></span><br><span class="line"><span class="title function_">handleRequest</span>(req.<span class="property">url</span>, req.<span class="property">method</span> <span class="keyword">as</span> <span class="string">&quot;GET&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>You can use as const to convert the entire object to be type literals:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> req = &#123; <span class="attr">url</span>: <span class="string">&quot;https://example.com&quot;</span>, <span class="attr">method</span>: <span class="string">&quot;GET&quot;</span> &#125; <span class="keyword">as</span> <span class="keyword">const</span>;</span><br><span class="line"><span class="title function_">handleRequest</span>(req.<span class="property">url</span>, req.<span class="property">method</span>);</span><br></pre></td></tr></table></figure>
+<p>The as const suffix acts like const but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like string or number.</p>
+<h2 id="Type-Aliases"><a href="#Type-Aliases" class="headerlink" title="Type Aliases"></a>Type Aliases</h2><p>A type alias is exactly that - a name for any type. </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Person</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">person</span>: <span class="title class_">Person</span>;</span><br><span class="line"></span><br><span class="line">person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Max&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">32</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">people</span>: <span class="title class_">Person</span>[];</span><br></pre></td></tr></table></figure>
+<p>You can actually use a type alias to give a name to any type at all, not just an object type. For example, a type alias can name a union type:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="variable constant_">ID</span> = <span class="built_in">number</span> | <span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h1><p>An interface declaration is another way to name an object type:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">  <span class="attr">x</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">y</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printCoord</span>(<span class="params">pt: Point</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;The coordinate&#x27;s x value is &quot;</span> + pt.<span class="property">x</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;The coordinate&#x27;s y value is &quot;</span> + pt.<span class="property">y</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="title function_">printCoord</span>(&#123; <span class="attr">x</span>: <span class="number">100</span>, <span class="attr">y</span>: <span class="number">100</span> &#125;);</span><br></pre></td></tr></table></figure>
+<p>Type aliases and interfaces are very similar, and in many cases you can choose between them freely. Almost all features of an interface are available in type, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.</p>
+<h1 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h1><p>Functions are the primary means of passing data around in JavaScript. TypeScript allows you to specify the types of both the input and output values of functions.</p>
+<h2 id="Function-Types"><a href="#Function-Types" class="headerlink" title="Function Types"></a>Function Types</h2><p>When you declare a function, you can add type annotations after each parameter to declare what types of parameters the function accepts. Parameter type annotations go after the parameter name:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parameter type annotation</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">greet</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Hello, &quot;</span> + name.<span class="title function_">toUpperCase</span>() + <span class="string">&quot;!!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>You can also add return type annotations. Return type annotations appear after the parameter list:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getFavoriteNumber</span>(<span class="params"></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">26</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Anonymous functions are a little bit different from function declarations. When a function appears in a place where TypeScript can determine how it’s going to be called, the parameters of that function are automatically given types.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// No type annotations here, but TypeScript can spot the bug</span></span><br><span class="line"><span class="keyword">const</span> names = [<span class="string">&quot;Alice&quot;</span>, <span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;Eve&quot;</span>];</span><br><span class="line"><span class="comment">// Contextual typing for function</span></span><br><span class="line">names.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(s.<span class="title function_">toUppercase</span>());</span><br><span class="line"><span class="comment">//error: Property &#x27;toUppercase&#x27; does not exist on type &#x27;string&#x27;. Did you mean &#x27;toUpperCase&#x27;?</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Even though the parameter s didn’t have a type annotation, TypeScript used the types of the forEach function, along with the inferred type of the array, to determine the type s will have.</p>
+<p>This process is called contextual typing because the context that the function occurred within informs what type it should have.</p>
+<h2 id="Function-Component-props"><a href="#Function-Component-props" class="headerlink" title="Function Component props"></a>Function Component props</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Todos</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;&#123; <span class="attr">items</span>: <span class="built_in">string</span>[] &#125;&gt; = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;props.items.map((item) =&gt; (</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#123;item&#125;</span>&gt;</span>&#123;item&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      ))&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Todos</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="Generics"><a href="#Generics" class="headerlink" title="Generics"></a>Generics</h1><p>In languages like C# and Java, one of the main tools in the toolbox for creating reusable components is generics, that is, being able to create a component that can work over a variety of types rather than a single one. This allows users to consume these components and use their own types.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> identity&lt;<span class="title class_">Type</span>&gt;(<span class="attr">arg</span>: <span class="title class_">Type</span>): <span class="title class_">Type</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This Type allows us to capture the type the user provides (e.g. number), so that we can use that information later. Here, we use Type again as the return type. On inspection, we can now see the same type is used for the argument and the return type. This allows us to traffic that type information in one side of the function and out the other.</p>
+<p>We can not just use the angle brackets to define a generic type but also to USE a generic type and explicitly set the placeholder type that should be used - sometimes this is required if TypeScript is not able to infer the (correct) type.<br>we could’ve also set the concrete type for our function placeholder T explicitly:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> insertAtBeginning&lt;T&gt;(<span class="attr">array</span>: T[], <span class="attr">value</span>: T) &#123;</span><br><span class="line">  <span class="keyword">const</span> newArray = [value, ...array];</span><br><span class="line">  <span class="keyword">return</span> newArray;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> stringArray = insertAtBeginning&lt;<span class="built_in">string</span>&gt;([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>], <span class="string">&#x27;d&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="Context-API"><a href="#Context-API" class="headerlink" title="Context API"></a>Context API</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Todo</span> <span class="keyword">from</span> <span class="string">&#x27;../models/todo&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TodosContextObj</span> = &#123;</span><br><span class="line">  <span class="attr">items</span>: <span class="title class_">Todo</span>[];</span><br><span class="line">  <span class="attr">addTodo</span>: <span class="function">(<span class="params">text: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">removeTodo</span>: <span class="function">(<span class="params">id: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">TodosContext</span> = <span class="title class_">React</span>.<span class="property">createContext</span>&lt;<span class="title class_">TodosContextObj</span>&gt;(&#123;</span><br><span class="line">  <span class="attr">items</span>: [],</span><br><span class="line">  <span class="attr">addTodo</span>: <span class="function">() =&gt;</span> &#123;&#125;,</span><br><span class="line">  <span class="attr">removeTodo</span>: <span class="function">(<span class="params">id: <span class="built_in">string</span></span>) =&gt;</span> &#123;&#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TodosContextProvider</span>: <span class="title class_">React</span>.<span class="property">FC</span> = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [todos, setTodos] = useState&lt;<span class="title class_">Todo</span>[]&gt;([]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">addTodoHandler</span> = (<span class="params">todoText: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> newTodo = <span class="keyword">new</span> <span class="title class_">Todo</span>(todoText);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">setTodos</span>(<span class="function">(<span class="params">prevTodos</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> prevTodos.<span class="title function_">concat</span>(newTodo);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">removeTodoHandler</span> = (<span class="params">todoId: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setTodos</span>(<span class="function">(<span class="params">prevTodos</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> prevTodos.<span class="title function_">filter</span>(<span class="function">(<span class="params">todo</span>) =&gt;</span> todo.<span class="property">id</span> !== todoId);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="attr">contextValue</span>: <span class="title class_">TodosContextObj</span> = &#123;</span><br><span class="line">    <span class="attr">items</span>: todos,</span><br><span class="line">    <span class="attr">addTodo</span>: addTodoHandler,</span><br><span class="line">    <span class="attr">removeTodo</span>: removeTodoHandler,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">TodosContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;contextValue&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;props.children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">TodosContext.Provider</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">TodosContextProvider</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="tsconfig-json"><a href="#tsconfig-json" class="headerlink" title="tsconfig.json"></a>tsconfig.json</h1><p>The presence of a tsconfig.json file in a directory indicates that the directory is the root of a TypeScript project. The tsconfig.json file specifies the root files and the compiler options required to compile the project.</p>
+<p>JavaScript projects can use a jsconfig.json file instead, which acts almost the same but has some JavaScript-related compiler flags enabled by default.<br>Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at <a target="_blank" rel="noopener" href="https://github.com/tsconfig/bases/">tsconfig bases</a>. These are tsconfig.json files which your project extends from which simplifies your tsconfig.json by handling the runtime support.</p>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/frontend/" rel="tag">frontend</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/18/React-Note/"
+                    data-tooltip="React Note"
+                    aria-label="NEXT: React Note"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Rain. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/18/React-Note/"
+                    data-tooltip="React Note"
+                    aria-label="NEXT: React Note"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/25/Typescript-React/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Rain</h4>
+        
+            <div id="about-card-bio"><p>404</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>SDE</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-bym1pojsdhirnpkhctdxarml2turvkjeaykax5h1dckej6jtzqgiml57ke5z.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

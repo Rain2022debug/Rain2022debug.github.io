@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Rain&#39;s BLOG">
+    <title>React Note - Rain&#39;s BLOG</title>
+    <meta name="author" content="Rain">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Rain","sameAs":[]},"articleBody":"\n\nComponentdeclarativeImperative code instructs JavaScript on how it should perform each step. With declarative code, we tell JavaScript what we want to be done, and let JavaScript take care of performing the steps.\nReact uses a declarative approach for building these components. With React, you will not tell React that a certain HTML element should be created and inserted in a specific place on the user interface as you would be doing it with Vanilla JavaScript. Instead you will always define the desired end state, the target state or possibly also different target states depending on different conditions and it’s then React’s job to figure out which elements on the actual webpage might need to be added or removed or updated.And you don’t write these concrete DOM updating instructions on your own as you would be doing it with just JavaScript, instead with React and React components, you just define these end states and under which conditions which state should be used and then React will do all of the rest under the hood.\nJSXJSX is a syntax extension for JavaScript that lets you write HTML-like markup inside a JavaScript file.The Web has been built on HTML, CSS, and JavaScript. For many years, web developers kept content in HTML, design in CSS, and logic in JavaScript—often in separate files.But as the Web became more interactive, logic increasingly determined content. JavaScript was in charge of the HTML! This is why in React, rendering logic and markup live together in the same place—components.\nEach React component is a JavaScript function that may contain some markup that React renders into the browser. React components use a syntax extension called JSX to represent that markup. JSX looks a lot like HTML, but it is a bit stricter and can display dynamic information. \nThe Rules of JSXJSX is stricter and has a few more rules than HTML.\n\nReturn a single root element \nClose all the tags\ncamelCase most of the things\n\npropsReact components use props to communicate with each other. Every parent component can pass some information to its child components by giving them props. You can pass any JavaScript value through them, including objects, arrays, and functions.You can think of props like “knobs” that you can adjust. They serve the same role as arguments serve for functions—in fact, props are the only argument to your component! React component functions accept a single argument, a props object. Usually you don’t need the whole props object itself, so you destructure it into individual props.Some components forward all of their props to their children, like how this Profile does with Avatar. Because they don’t use any of their props directly, it can make sense to use a more concise “spread” syntax:\n1234567function Profile(props) &#123;  return (    &lt;div className=&quot;card&quot;&gt;      &lt;Avatar &#123;...props&#125; /&gt;    &lt;/div&gt;  );&#125;\n\nWhen you nest content inside a JSX tag, the parent component will receive that content in a prop called children. For example, the Card component below will receive a children prop set to  and render it in a wrapper div:\n1234567891011121314151617181920212223import Avatar from &#x27;./Avatar.js&#x27;;function Card(&#123; children &#125;) &#123;  return (    &lt;div className=&quot;card&quot;&gt;      &#123;children&#125;    &lt;/div&gt;  );&#125;export default function Profile() &#123;  return (    &lt;Card&gt;      &lt;Avatar        size=&#123;100&#125;        person=&#123;&#123;           name: &#x27;Katsuko Saruhashi&#x27;,          imageId: &#x27;YfeOqp2&#x27;        &#125;&#125;      /&gt;    &lt;/Card&gt;  );&#125;\nYou can think of a component with a children prop as having a “hole” that can be “filled in” by its parent components with arbitrary JSX. You will often use the children prop for visual wrappers: panels, grids, and so on.\nprops are immutable. When a component needs to change its props (for example, in response to a user interaction or new data), it will have to “ask” its parent component to pass it different props—a new object! Its old props will then be cast aside, and eventually the JavaScript engine will reclaim the memory taken by them.\nDon’t try to “change props”. When you need to respond to the user input (like changing the selected color), you will need to “set state”.\noverlay and PortalcreatePortal lets you render some children into a different part of the DOM.\n1234&lt;div&gt;  &lt;SomeComponent /&gt;  &#123;createPortal(children, domNode)&#125;&lt;/div&gt;\nPortals let your components render some of their children into a different place in the DOM. This lets a part of your component “escape” from whatever containers it may be in. For example, a component can display a modal dialog or a tooltip that appears above and outside of the rest of the page.\nTo create a portal, render the result of createPortal with some JSX and the DOM node where it should go. React will put the DOM nodes for the JSX you passed inside of the DOM node you provided. \n12&lt;div id=&quot;overlays&quot;&gt;&lt;/div&gt;&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;\n1234567891011121314151617181920212223242526272829303132import &#123; Fragment &#125; from &#x27;react&#x27;;import ReactDOM from &#x27;react-dom&#x27;;import classes from &#x27;./Modal.module.css&#x27;;const Backdrop = (props) =&gt; &#123;  return &lt;div className=&#123;classes.backdrop&#125; /&gt;;&#125;;const ModalOverlay = (props) =&gt; &#123;  return (    &lt;div className=&#123;classes.modal&#125;&gt;      &lt;div className=&#123;classes.content&#125;&gt;&#123;props.children&#125;&lt;/div&gt;    &lt;/div&gt;  );&#125;;const portalElement = document.getElementById(&#x27;overlays&#x27;);const Modal = (props) =&gt; &#123;  return (    &lt;Fragment&gt;      &#123;ReactDOM.createPortal(&lt;Backdrop /&gt;, portalElement)&#125;      &#123;ReactDOM.createPortal(        &lt;ModalOverlay&gt;&#123;props.children&#125;&lt;/ModalOverlay&gt;,        portalElement      )&#125;    &lt;/Fragment&gt;  );&#125;;export default Modal;\nA portal only changes the physical placement of the DOM node. In every other way, the JSX you render into a portal acts as a child node of the React component that renders it. For example, the child can access the context provided by the parent tree, and events still bubble up from children to parents according to the React tree.You can use a portal to create a modal dialog that floats above the rest of the page, even if the component that summons the dialog is inside a container with overflow: hidden or other styles that interfere with the dialog.\nuseRefuseRef is a React Hook that lets you reference a value that’s not needed for rendering. useRef returns a ref object with a single current property initially set to the initial value you provided. To update the value inside the ref, you need to manually change its current property.\n\nYou can store information between re-renders (unlike regular variables, which reset on every render).\nChanging it does not trigger a re-render (unlike state variables, which trigger a re-render).\nThe information is local to each copy of your component (unlike the variables outside, which are shared).\n\nChanging a ref does not trigger a re-render, so refs are not appropriate for storing information that you want to display on the screen. Use state for that instead. \nIf you try to pass a ref to your own component, You might get an error in the console. By default, your own components don’t expose refs to the DOM nodes inside them.\nTo fix this, find the component that you want to get a ref to:\n1234567891011121314import &#123; useRef, useState &#125; from &#x27;react&#x27;;import Input from &#x27;../../UI/Input&#x27;;const MealItemForm = (props) =&gt; &#123;  const amountInputRef = useRef();  return (    &lt;form&gt;      &lt;Input        ref=&#123;amountInputRef&#125;      /&gt;      &lt;button&gt;+ Add&lt;/button&gt;    &lt;/form&gt;  );&#125;;\n1234567891011import React from &#x27;react&#x27;;import classes from &#x27;./Input.module.css&#x27;;const Input = React.forwardRef((props, ref) =&gt; &#123;  return (    &lt;div className=&#123;classes.input&#125;&gt;      &lt;label htmlFor=&#123;props.input.id&#125;&gt;&#123;props.label&#125;&lt;/label&gt;      &lt;input ref=&#123;ref&#125; &#123;...props.input&#125; /&gt;    &lt;/div&gt;  );&#125;);\nThen the parent component can get a ref to it.\nuseEffectuseEffect is a React Hook that lets you synchronize a component with an external system.Sometimes, your component might need to stay connected to the network, some browser API, or a third-party library, while it is displayed on the page. Such systems aren’t controlled by React, so they are called external.\n123456789101112131415import &#123; useEffect &#125; from &#x27;react&#x27;;import &#123; createConnection &#125; from &#x27;./chat.js&#x27;;function ChatRoom(&#123; roomId &#125;) &#123;  const [serverUrl, setServerUrl] = useState(&#x27;https://localhost:1234&#x27;);  useEffect(() =&gt; &#123;  \tconst connection = createConnection(serverUrl, roomId);    connection.connect();  \treturn () =&gt; &#123;      connection.disconnect();  \t&#125;;  &#125;, [serverUrl, roomId]);  // ...&#125;\nYou need to pass two arguments to useEffect:\n\nA setup function with setup code that connects to that system. It should return a cleanup function with cleanup code that disconnects from that system.\nA list of dependencies including every value from your component used inside of those functions.\n\nReact calls your setup and cleanup functions whenever it’s necessary, which may happen multiple times:\n\nYour setup code runs when your component is added to the page (mounts).\nAfter every re-render of your component where the dependencies have changed:\nFirst, your cleanup code runs with the old props and state.\nThen, your setup code runs with the new props and state.\n\n\nYour cleanup code runs one final time after your component is removed from the page (unmounts).\n\n1234567891011121314useEffect(() =&gt; &#123;    if (items.length === 0) &#123;      return;    &#125;    setBtnIsHighlighted(true);    const timer = setTimeout(() =&gt; &#123;      setBtnIsHighlighted(false);    &#125;, 300);    return () =&gt; &#123;      clearTimeout(timer);    &#125;;  &#125;, [items]);\nBy the way, cleanup function returned should run synchronous code and setup function should not return a promise. So you could create an async function inside setup function.\nWhen Strict Mode is on, in development, React runs setup and cleanup one extra time before the actual setup.\nThis is a stress-test that verifies your Effect’s logic is implemented correctly. If this causes visible issues, your cleanup function is missing some logic. The cleanup function should stop or undo whatever the setup function was doing. The rule of thumb is that the user shouldn’t be able to distinguish between the setup being called once (as in production) and a setup → cleanup → setup sequence (as in development).\nContextcart-context.js\n12345678910import React from &#x27;react&#x27;;const CartContext = React.createContext(&#123;  items: [],  totalAmount: 0,  addItem: (item) =&gt; &#123;&#125;,  removeItem: (id) =&gt; &#123;&#125;&#125;);export default CartContext;\nCartProvider.js\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647import &#123; useReducer &#125; from &#x27;react&#x27;;import CartContext from &#x27;./cart-context&#x27;;const defaultCartState = &#123;  items: [],  totalAmount: 0&#125;;const cartReducer = (state, action) =&gt; &#123;  if (action.type === &#x27;ADD&#x27;) &#123;    const updatedItems = state.items.concat(action.item);    const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;    return &#123;      items: updatedItems,      totalAmount: updatedTotalAmount    &#125;;  &#125;  return defaultCartState;&#125;;const CartProvider = (props) =&gt; &#123;  const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);  const addItemToCartHandler = (item) =&gt; &#123;    dispatchCartAction(&#123;type: &#x27;ADD&#x27;, item: item&#125;);  &#125;;  const removeItemFromCartHandler = (id) =&gt; &#123;    dispatchCartAction(&#123;type: &#x27;REMOVE&#x27;, id: id&#125;);  &#125;;  const cartContext = &#123;    items: cartState.items,    totalAmount: cartState.totalAmount,    addItem: addItemToCartHandler,    removeItem: removeItemFromCartHandler,  &#125;;  return (    &lt;CartContext.Provider value=&#123;cartContext&#125;&gt;      &#123;props.children&#125;    &lt;/CartContext.Provider&gt;  );&#125;;export default CartProvider;","dateCreated":"2022-12-18T00:30:13+08:00","dateModified":"2022-12-31T19:46:59+08:00","datePublished":"2022-12-18T00:30:13+08:00","description":"A JavaScript library for building user interfaces.","headline":"React Note","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://rain2022debug.github.io/2022/12/18/React-Note/"},"publisher":{"@type":"Organization","name":"Rain","sameAs":[]},"url":"https://rain2022debug.github.io/2022/12/18/React-Note/","keywords":"frontend"}</script>
+    <meta name="description" content="A JavaScript library for building user interfaces.">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="React Note">
+<meta property="og:url" content="https://rain2022debug.github.io/2022/12/18/React-Note/index.html">
+<meta property="og:site_name" content="Rain&#39;s BLOG">
+<meta property="og:description" content="A JavaScript library for building user interfaces.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-17T16:30:13.000Z">
+<meta property="article:modified_time" content="2022-12-31T11:46:59.054Z">
+<meta property="article:author" content="Rain">
+<meta property="article:tag" content="frontend">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-deyemuu3b37vh25ias0pblnztkxabqshff6agygslsqrprld1dh04ekuro5o.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Rain&#39;s BLOG
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Rain2022debug"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            React Note
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2022-12-18T00:30:13+08:00">
+	
+		    Dec 18, 2022
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <!-- excerpt -->
+<h1 id="table-of-contents">Table of Contents</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Component"><span class="toc-text">Component</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#declarative"><span class="toc-text">declarative</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSX"><span class="toc-text">JSX</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Rules-of-JSX"><span class="toc-text">The Rules of JSX</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#props"><span class="toc-text">props</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#overlay-and-Portal"><span class="toc-text">overlay and Portal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#useRef"><span class="toc-text">useRef</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#useEffect"><span class="toc-text">useEffect</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Context"><span class="toc-text">Context</span></a></li></ol>
+<h1 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h1><h2 id="declarative"><a href="#declarative" class="headerlink" title="declarative"></a>declarative</h2><p>Imperative code instructs JavaScript on how it should perform each step. With declarative code, we tell JavaScript what we want to be done, and let JavaScript take care of performing the steps.</p>
+<p>React uses a declarative approach for building these components. With React, you will not tell React that a certain HTML element should be created and inserted in a specific place on the user interface as you would be doing it with Vanilla JavaScript. Instead you will always define the desired end state, the target state or possibly also different target states depending on different conditions and it’s then React’s job to figure out which elements on the actual webpage might need to be added or removed or updated.<br>And you don’t write these concrete DOM updating instructions on your own as you would be doing it with just JavaScript, instead with React and React components, you just define these end states and under which conditions which state should be used and then React will do all of the rest under the hood.</p>
+<h2 id="JSX"><a href="#JSX" class="headerlink" title="JSX"></a>JSX</h2><p>JSX is a syntax extension for JavaScript that lets you write HTML-like markup inside a JavaScript file.<br>The Web has been built on HTML, CSS, and JavaScript. For many years, web developers kept content in HTML, design in CSS, and logic in JavaScript—often in separate files.<br>But as the Web became more interactive, logic increasingly determined content. JavaScript was in charge of the HTML! This is why in React, rendering logic and markup live together in the same place—components.</p>
+<p>Each React component is a JavaScript function that may contain some markup that React renders into the browser. React components use a syntax extension called JSX to represent that markup. JSX looks a lot like HTML, but it is a bit stricter and can display dynamic information. </p>
+<h3 id="The-Rules-of-JSX"><a href="#The-Rules-of-JSX" class="headerlink" title="The Rules of JSX"></a>The Rules of JSX</h3><p>JSX is stricter and has a few more rules than HTML.</p>
+<ul>
+<li>Return a single root element </li>
+<li>Close all the tags</li>
+<li>camelCase most of the things</li>
+</ul>
+<h2 id="props"><a href="#props" class="headerlink" title="props"></a>props</h2><p>React components use props to communicate with each other. Every parent component can pass some information to its child components by giving them props. You can pass any JavaScript value through them, including objects, arrays, and functions.<br>You can think of props like “knobs” that you can adjust. They serve the same role as arguments serve for functions—in fact, props are the only argument to your component! React component functions accept a single argument, a props object. Usually you don’t need the whole props object itself, so you destructure it into individual props.<br>Some components forward all of their props to their children, like how this Profile does with Avatar. Because they don’t use any of their props directly, it can make sense to use a more concise “spread” syntax:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Profile</span>(<span class="params">props</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;card&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Avatar</span> &#123;<span class="attr">...props</span>&#125; /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When you nest content inside a JSX tag, the parent component will receive that content in a prop called children. For example, the Card component below will receive a children prop set to <Avatar /> and render it in a wrapper div:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Avatar</span> <span class="keyword">from</span> <span class="string">&#x27;./Avatar.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Card</span>(<span class="params">&#123; children &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;card&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Profile</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Card</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Avatar</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">size</span>=<span class="string">&#123;100&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">person</span>=<span class="string">&#123;&#123;</span> </span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">name:</span> &#x27;<span class="attr">Katsuko</span> <span class="attr">Saruhashi</span>&#x27;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">imageId:</span> &#x27;<span class="attr">YfeOqp2</span>&#x27;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Card</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>You can think of a component with a children prop as having a “hole” that can be “filled in” by its parent components with arbitrary JSX. You will often use the children prop for visual wrappers: panels, grids, and so on.</p>
+<p>props are immutable. When a component needs to change its props (for example, in response to a user interaction or new data), it will have to “ask” its parent component to pass it different props—a new object! Its old props will then be cast aside, and eventually the JavaScript engine will reclaim the memory taken by them.</p>
+<p>Don’t try to “change props”. When you need to respond to the user input (like changing the selected color), you will need to “set state”.</p>
+<h1 id="overlay-and-Portal"><a href="#overlay-and-Portal" class="headerlink" title="overlay and Portal"></a>overlay and Portal</h1><p>createPortal lets you render some children into a different part of the DOM.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">SomeComponent</span> /&gt;</span></span></span><br><span class="line">  &#123;<span class="title function_">createPortal</span>(children, domNode)&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>Portals let your components render some of their children into a different place in the DOM. This lets a part of your component “escape” from whatever containers it may be in. For example, a component can display a modal dialog or a tooltip that appears above and outside of the rest of the page.</p>
+<p>To create a portal, render the result of createPortal with some JSX and the DOM node where it should go. React will put the DOM nodes for the JSX you passed inside of the DOM node you provided. </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;overlays&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Fragment</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> classes <span class="keyword">from</span> <span class="string">&#x27;./Modal.module.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Backdrop</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;classes.backdrop&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">ModalOverlay</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;classes.modal&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;classes.content&#125;</span>&gt;</span>&#123;props.children&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> portalElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;overlays&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Modal</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Fragment</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;ReactDOM.createPortal(<span class="tag">&lt;<span class="name">Backdrop</span> /&gt;</span>, portalElement)&#125;</span></span><br><span class="line"><span class="language-xml">      &#123;ReactDOM.createPortal(</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">ModalOverlay</span>&gt;</span>&#123;props.children&#125;<span class="tag">&lt;/<span class="name">ModalOverlay</span>&gt;</span>,</span></span><br><span class="line"><span class="language-xml">        portalElement</span></span><br><span class="line"><span class="language-xml">      )&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Fragment</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Modal</span>;</span><br></pre></td></tr></table></figure>
+<p>A portal only changes the physical placement of the DOM node. In every other way, the JSX you render into a portal acts as a child node of the React component that renders it. For example, the child can access the context provided by the parent tree, and events still bubble up from children to parents according to the React tree.<br>You can use a portal to create a modal dialog that floats above the rest of the page, even if the component that summons the dialog is inside a container with overflow: hidden or other styles that interfere with the dialog.</p>
+<h1 id="useRef"><a href="#useRef" class="headerlink" title="useRef"></a>useRef</h1><p>useRef is a React Hook that lets you reference a value that’s not needed for rendering. useRef returns a ref object with a single current property initially set to the initial value you provided. To update the value inside the ref, you need to manually change its current property.<br><br /></p>
+<ul>
+<li>You can store information between re-renders (unlike regular variables, which reset on every render).</li>
+<li>Changing it does not trigger a re-render (unlike state variables, which trigger a re-render).</li>
+<li>The information is local to each copy of your component (unlike the variables outside, which are shared).</li>
+</ul>
+<p>Changing a ref does not trigger a re-render, so refs are not appropriate for storing information that you want to display on the screen. Use state for that instead. </p>
+<p>If you try to pass a ref to your own component, You might get an error in the console. By default, your own components don’t expose refs to the DOM nodes inside them.</p>
+<p>To fix this, find the component that you want to get a ref to:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useRef, useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Input</span> <span class="keyword">from</span> <span class="string">&#x27;../../UI/Input&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">MealItemForm</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> amountInputRef = <span class="title function_">useRef</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Input</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">ref</span>=<span class="string">&#123;amountInputRef&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span>&gt;</span>+ Add<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> classes <span class="keyword">from</span> <span class="string">&#x27;./Input.module.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Input</span> = <span class="title class_">React</span>.<span class="title function_">forwardRef</span>(<span class="function">(<span class="params">props, ref</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;classes.input&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">label</span> <span class="attr">htmlFor</span>=<span class="string">&#123;props.input.id&#125;</span>&gt;</span>&#123;props.label&#125;<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">ref</span>=<span class="string">&#123;ref&#125;</span> &#123;<span class="attr">...props.input</span>&#125; /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Then the parent component can get a ref to it.</p>
+<h1 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h1><p>useEffect is a React Hook that lets you synchronize a component with an external system.<br>Sometimes, your component might need to stay connected to the network, some browser API, or a third-party library, while it is displayed on the page. Such systems aren’t controlled by React, so they are called external.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useEffect &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; createConnection &#125; <span class="keyword">from</span> <span class="string">&#x27;./chat.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">ChatRoom</span>(<span class="params">&#123; roomId &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [serverUrl, setServerUrl] = <span class="title function_">useState</span>(<span class="string">&#x27;https://localhost:1234&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  	<span class="keyword">const</span> connection = <span class="title function_">createConnection</span>(serverUrl, roomId);</span><br><span class="line">    connection.<span class="title function_">connect</span>();</span><br><span class="line">  	<span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      connection.<span class="title function_">disconnect</span>();</span><br><span class="line">  	&#125;;</span><br><span class="line">  &#125;, [serverUrl, roomId]);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>You need to pass two arguments to useEffect:</p>
+<ul>
+<li>A setup function with setup code that connects to that system. It should return a cleanup function with cleanup code that disconnects from that system.</li>
+<li>A list of dependencies including every value from your component used inside of those functions.</li>
+</ul>
+<p>React calls your setup and cleanup functions whenever it’s necessary, which may happen multiple times:</p>
+<ol>
+<li>Your setup code runs when your component is added to the page (mounts).</li>
+<li>After every re-render of your component where the dependencies have changed:<ul>
+<li>First, your cleanup code runs with the old props and state.</li>
+<li>Then, your setup code runs with the new props and state.</li>
+</ul>
+</li>
+<li>Your cleanup code runs one final time after your component is removed from the page (unmounts).</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (items.<span class="property">length</span> === <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">setBtnIsHighlighted</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setBtnIsHighlighted</span>(<span class="literal">false</span>);</span><br><span class="line">    &#125;, <span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">clearTimeout</span>(timer);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;, [items]);</span><br></pre></td></tr></table></figure>
+<p>By the way, cleanup function returned should run synchronous code and setup function should not return a promise. So you could create an async function inside setup function.</p>
+<p>When Strict Mode is on, in development, React runs setup and cleanup one extra time before the actual setup.</p>
+<p>This is a stress-test that verifies your Effect’s logic is implemented correctly. If this causes visible issues, your cleanup function is missing some logic. The cleanup function should stop or undo whatever the setup function was doing. The rule of thumb is that the user shouldn’t be able to distinguish between the setup being called once (as in production) and a setup → cleanup → setup sequence (as in development).</p>
+<h1 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h1><p>cart-context.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">CartContext</span> = <span class="title class_">React</span>.<span class="title function_">createContext</span>(&#123;</span><br><span class="line">  <span class="attr">items</span>: [],</span><br><span class="line">  <span class="attr">totalAmount</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">addItem</span>: <span class="function">(<span class="params">item</span>) =&gt;</span> &#123;&#125;,</span><br><span class="line">  <span class="attr">removeItem</span>: <span class="function">(<span class="params">id</span>) =&gt;</span> &#123;&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">CartContext</span>;</span><br></pre></td></tr></table></figure>
+<p>CartProvider.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useReducer &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CartContext</span> <span class="keyword">from</span> <span class="string">&#x27;./cart-context&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> defaultCartState = &#123;</span><br><span class="line">  <span class="attr">items</span>: [],</span><br><span class="line">  <span class="attr">totalAmount</span>: <span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">cartReducer</span> = (<span class="params">state, action</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (action.<span class="property">type</span> === <span class="string">&#x27;ADD&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> updatedItems = state.<span class="property">items</span>.<span class="title function_">concat</span>(action.<span class="property">item</span>);</span><br><span class="line">    <span class="keyword">const</span> updatedTotalAmount = state.<span class="property">totalAmount</span> + action.<span class="property">item</span>.<span class="property">price</span> * action.<span class="property">item</span>.<span class="property">amount</span>;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">items</span>: updatedItems,</span><br><span class="line">      <span class="attr">totalAmount</span>: updatedTotalAmount</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> defaultCartState;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">CartProvider</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [cartState, dispatchCartAction] = <span class="title function_">useReducer</span>(cartReducer, defaultCartState);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">addItemToCartHandler</span> = (<span class="params">item</span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">dispatchCartAction</span>(&#123;<span class="attr">type</span>: <span class="string">&#x27;ADD&#x27;</span>, <span class="attr">item</span>: item&#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">removeItemFromCartHandler</span> = (<span class="params">id</span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">dispatchCartAction</span>(&#123;<span class="attr">type</span>: <span class="string">&#x27;REMOVE&#x27;</span>, <span class="attr">id</span>: id&#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> cartContext = &#123;</span><br><span class="line">    <span class="attr">items</span>: cartState.<span class="property">items</span>,</span><br><span class="line">    <span class="attr">totalAmount</span>: cartState.<span class="property">totalAmount</span>,</span><br><span class="line">    <span class="attr">addItem</span>: addItemToCartHandler,</span><br><span class="line">    <span class="attr">removeItem</span>: removeItemFromCartHandler,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">CartContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;cartContext&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;props.children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">CartContext.Provider</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">CartProvider</span>;</span><br></pre></td></tr></table></figure>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/frontend/" rel="tag">frontend</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/25/Typescript-React/"
+                    data-tooltip="TypeScript + React"
+                    aria-label="PREVIOUS: TypeScript + React"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/12/DOM-BOM-Note/"
+                    data-tooltip="DOM &amp; BOM Note"
+                    aria-label="NEXT: DOM &amp; BOM Note"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2022 Rain. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/25/Typescript-React/"
+                    data-tooltip="TypeScript + React"
+                    aria-label="PREVIOUS: TypeScript + React"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2022/12/12/DOM-BOM-Note/"
+                    data-tooltip="DOM &amp; BOM Note"
+                    aria-label="NEXT: DOM &amp; BOM Note"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://rain2022debug.github.io/2022/12/18/React-Note/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Rain</h4>
+        
+            <div id="about-card-bio"><p>404</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>SDE</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-bym1pojsdhirnpkhctdxarml2turvkjeaykax5h1dckej6jtzqgiml57ke5z.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
